@@ -39,14 +39,9 @@ class Heart extends Phaser.GameObjects.Sprite {
   }
 
   /*
-    This part adds a tween effect to move the heart toward the heart text and then it destroys it
+    This part adds a tween effect to move the heart toward the heart text or player if hurt and then it destroys it
     */
-  pick() {
-    const { x, y } = this.scene.cameras.main.getWorldPoint(
-      this.scene.scoreHeartsLogo.x,
-      this.scene.scoreHeartsLogo.y
-    );
-
+  pick(x,y) {
     this.disabled = true;
     this.scene.tweens.add({
       targets: this,

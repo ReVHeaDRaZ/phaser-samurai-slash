@@ -217,7 +217,9 @@ class Player extends Phaser.GameObjects.Sprite {
 
   setNotHurt(){
     this.hurtTween.stop();
+    this.tint = 0xffffff;
     this.hurt = false;
+    this.health = 2;
   }
 
   /*

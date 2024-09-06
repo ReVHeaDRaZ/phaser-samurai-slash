@@ -275,12 +275,19 @@ export default class GameScene extends Phaser.Scene{
 
   pickHeart(player, heart) {
     if (!heart.disabled) {
-      heart.pick();
+      const { x, y } = this.cameras.main.getWorldPoint(
+        this.scoreHeartsLogo.x,
+        this.scoreHeartsLogo.y
+      );
       this.playAudio("coin");
-      if(!this.player.hurt)
+      if(!this.player.hurt){
+        heart.pick(x,y);
         this.updateHearts(1);
-      else
+      }
+      else{
+        heart.pick(this.player.x,this.player.y);
         this.player.setNotHurt();
+      }
     }
   }
 
