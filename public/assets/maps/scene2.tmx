@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="150" height="22" tilewidth="24" tileheight="24" infinite="0" nextlayerid="4" nextobjectid="43">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="150" height="22" tilewidth="24" tileheight="24" infinite="0" nextlayerid="4" nextobjectid="53">
  <editorsettings>
   <export target="scene2.tmj" format="json"/>
  </editorsettings>
@@ -33,24 +33,38 @@
   <object id="38" name="platform" x="419.667" y="396.667">
    <properties>
     <property name="dir" value="0"/>
+    <property name="size" value="4"/>
    </properties>
   </object>
-  <object id="39" name="coin" x="1187.33" y="441.333"/>
+  <object id="39" name="coin" x="1151.33" y="438"/>
   <object id="40" name="platform" x="1822" y="319.333">
    <properties>
     <property name="dir" value="0"/>
+    <property name="size" value="4"/>
    </properties>
   </object>
   <object id="41" name="platform" x="2539.67" y="471">
    <properties>
     <property name="dir" value="0"/>
+    <property name="size" value="4"/>
    </properties>
   </object>
   <object id="42" name="platform" x="3132" y="468">
    <properties>
     <property name="dir" value="0"/>
+    <property name="size" value="4"/>
    </properties>
   </object>
+  <object id="43" name="zombie" x="2327.33" y="463.333"/>
+  <object id="44" name="turn" x="2224.17" y="457.333" width="33" height="20"/>
+  <object id="45" name="turn" x="2398.17" y="456" width="33" height="20"/>
+  <object id="46" name="turn" x="2998.17" y="458.667" width="33" height="20"/>
+  <object id="47" name="turn" x="2823.5" y="456.667" width="33" height="20"/>
+  <object id="48" name="zombie" x="2938.67" y="460.667"/>
+  <object id="49" name="coin" x="2895.33" y="462"/>
+  <object id="50" name="zombie" x="1072" y="432.667"/>
+  <object id="51" name="zombie" x="1117.33" y="336.667"/>
+  <object id="52" name="heart" x="1212" y="434.667"/>
  </objectgroup>
  <layer id="1" name="tileLayer2" width="150" height="22">
   <data encoding="csv">

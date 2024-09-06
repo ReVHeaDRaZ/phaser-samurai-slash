@@ -28,6 +28,7 @@ export default class Platform extends Phaser.GameObjects.Container {
     this.add(this.platform);
 
     this.init();
+    console.log("Platform spawned with size:" + size + " type:" + this.type);
   }
 
   /*
@@ -36,7 +37,6 @@ export default class Platform extends Phaser.GameObjects.Container {
   init() {
     let offsetX = this.x;
     let offsetY = this.y;
-    console.log(this.type)
     switch (this.type) {
       case 0:
         offsetY = this.y - 150;

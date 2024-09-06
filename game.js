@@ -122,9 +122,8 @@ export default class GameScene extends Phaser.Scene{
       }
       if (object.name === "platform") {
         this.platformGroup.add(
-          new Platform(this, object.x, object.y,4)
+          new Platform(this, object.x, object.y, +object.properties[1].value, +object.properties[0].value)
         );
-        console.log(object.properties);
       }
 
       if (object.name === "turn") {
@@ -446,7 +445,6 @@ export default class GameScene extends Phaser.Scene{
     }
 
     updateHearts(amount) {
-      console.log("UpdateHearts");
       const hearts = +this.registry.get("hearts") + amount;
       this.registry.set("hearts", hearts);
       this.scoreHearts.setText("x" + hearts);
