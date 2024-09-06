@@ -41,7 +41,7 @@
     <property name="dir" value="0"/>
    </properties>
   </object>
-  <object id="41" name="platform" x="2540.67" y="476">
+  <object id="41" name="platform" x="2539.67" y="471">
    <properties>
     <property name="dir" value="0"/>
    </properties>
