@@ -13,6 +13,7 @@ export default class Outro extends Phaser.Scene {
     this.center_height = this.height / 2;
     this.introLayer = this.add.layer();
     this.splashLayer = this.add.layer();
+    this.totalCoins = this.registry.get("coins");
     this.text = [
       "You did it!!",
       "Thanks to your Samurai skills",
@@ -37,6 +38,9 @@ export default class Outro extends Phaser.Scene {
       ];
     }
 
+    // Reset score and hearts
+    this.registry.set("hearts", 2);
+    this.registry.set("coins", 0);
     
     this.showHistory();
     
@@ -89,7 +93,7 @@ export default class Outro extends Phaser.Scene {
           this.center_width + 32,
           this.center_height + 95,
           "pixelFont",
-          "x" + this.registry.get("coins"),
+          "x" + this.totalCoins,
           30
         )
         .setDropShadow(0, 4, 0x222222, 0.9)
@@ -107,8 +111,5 @@ export default class Outro extends Phaser.Scene {
       });
       this.scoreCoinsLogo.play({ key: "coinscore", repeat: -1 });
 
-      // Reset score and hearts
-    this.registry.set("hearts", 2);
-    this.registry.set("coins", 0);
     }
 }

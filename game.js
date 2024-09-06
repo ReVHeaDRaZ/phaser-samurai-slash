@@ -24,6 +24,7 @@ export default class GameScene extends Phaser.Scene{
   preload(){ }
 
   create(){
+    this.levelFinished = false;
     this.cameras.main.setBackgroundColor(0x62a2bf); //(0x00b140)//(0x62a2bf)
     
     this.createParallaxBackground();
