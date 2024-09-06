@@ -58,7 +58,7 @@ export default class Platform extends Phaser.GameObjects.Container {
 
     this.scene.tweens.add({
       targets: this,
-      duration: 3000,
+      duration: 2000,
       x: { from: this.x, to: offsetX },
       y: { from: this.y, to: offsetY },
       repeat: -1,
