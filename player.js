@@ -202,8 +202,10 @@ class Player extends Phaser.GameObjects.Sprite {
     this.anims.play("hurt", true);
     if (this.health === 0) {
       this.die();
-    }else
+    }else{
+      this.body.setVelocityY(-200);
       this.flashPlayer();
+    }
   }
 
   die() {
