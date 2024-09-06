@@ -45,14 +45,16 @@ export default class Zombie extends Phaser.Physics.Arcade.Sprite {
     this.scene.add.particles(this.x,this.y,'blood', {
       tint: 0xff0000,
       alpha: { start: .5, end: 0 },
-      scale: {start:0.01, end: 0.5},
+      scale: {start:0.01, end: 0.4},
       speedY: {random: [-200,-350]},
       speedX: {random: [-50, 50] },
       rotate: { min: -180, max: 180 },
       lifespan: { min: 500, max: 1000 },
       frequency: 10,
       duration: 1000,
-      gravityY: 700
+      gravityY: 700,
+      bounds: {x:this.x-50, y:this.y-50, width: 100, height: 64},
+      collideBotton: true
     });    
   }
     
