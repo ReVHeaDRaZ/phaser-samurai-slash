@@ -3,9 +3,9 @@ export default class Outro extends Phaser.Scene {
     super({ key: "outro" });
   }
 
-  /*
-    This scene will show some text
-    */
+  init(data) {
+    this.isDead = data.isDead;
+  }
   create() {
     this.width = this.sys.game.config.width;
     this.height = this.sys.game.config.height;
@@ -15,16 +15,31 @@ export default class Outro extends Phaser.Scene {
     this.splashLayer = this.add.layer();
     this.text = [
       "You did it!!",
-      "Thanks to your building skills",
-      "and your mighty hammer,",
-      "you saved the earth.",
-      "Made in 3 days for Minijam",
-      "by Pello",
+      "Thanks to your Samurai skills",
+      "and your mighty sword,",
+      "you have saved the earth.",
+      "",
+      "Total Coins",
       "",
       "Press SPACE",
     ];
-    this.showHistory();
 
+    if(this.isDead){
+      this.text = [
+        "You have failed!!",
+        "Unfortunately your Samurai skills",
+        "are not up to the task of saving",
+        "the earth from evil monsters.",
+        "",
+        "Total Coins",
+        "",
+        "Press SPACE",
+      ];
+    }
+
+    
+    this.showHistory();
+    
     this.input.keyboard.on("keydown-SPACE", this.startSplash, this);
     this.input.keyboard.on("keydown-ENTER", this.startSplash, this);
   }
@@ -39,8 +54,12 @@ export default class Outro extends Phaser.Scene {
   showHistory() {
     this.text.forEach((line, i) => {
       this.time.delayedCall(
-        (i + 1) * 2000,
-        () => this.showLine(line, (i + 1) * 70),
+        (i) * 1000,
+        () => {
+          this.showLine(line, (i + 1) * 50);
+          if(i==6)
+            this.showScore();
+        },
         null,
         this
       );
@@ -50,7 +69,7 @@ export default class Outro extends Phaser.Scene {
   showLine(text, y) {
     let line = this.introLayer.add(
       this.add
-        .bitmapText(this.center_width, y, "pixelFont", text, 25)
+        .bitmapText(this.center_width, y, "pixelFont", text, 15)
         .setOrigin(0.5)
         .setAlpha(0)
     );
@@ -60,4 +79,36 @@ export default class Outro extends Phaser.Scene {
       alpha: 1,
     });
   }
+
+  /*
+    Helper function to show the total score then reset hearts an coins
+    */
+    showScore() {
+      this.scoreCoins = this.add
+        .bitmapText(
+          this.center_width + 32,
+          this.center_height + 95,
+          "pixelFont",
+          "x" + this.registry.get("coins"),
+          30
+        )
+        .setDropShadow(0, 4, 0x222222, 0.9)
+        .setOrigin(0.5)
+        .setScrollFactor(0);
+      this.scoreCoinsLogo = this.add
+        .sprite(this.center_width - 32, this.center_height + 95, "coin")
+        .setScale(0.7)
+        .setOrigin(0.5)
+        .setScrollFactor(0);
+      const coinAnimation = this.anims.create({
+        key: "coinscore",
+        frames: this.anims.generateFrameNumbers("coin", { start: 0, end: 7 }),
+        frameRate: 8,
+      });
+      this.scoreCoinsLogo.play({ key: "coinscore", repeat: -1 });
+
+      // Reset score and hearts
+    this.registry.set("hearts", 2);
+    this.registry.set("coins", 0);
+    }
 }

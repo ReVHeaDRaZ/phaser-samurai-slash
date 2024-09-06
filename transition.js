@@ -20,6 +20,7 @@ export default class Transition extends Phaser.Scene {
     this.center_height = this.height / 2;
     this.cameras.main.setBackgroundColor(0x62a2bf); //(0x00b140)//(0x62a2bf)
 
+    if (this.registry.get("hearts") <= 0) this.loadOutro(true);
     if (this.number === 5) this.loadOutro();
 
     this.addScore();
@@ -62,12 +63,12 @@ export default class Transition extends Phaser.Scene {
     this.scene.start("game", { name: this.name, number: this.number });
   }
 
-  loadOutro() {
-    this.scene.start("outro", { name: this.name, number: this.number });
+  loadOutro(isDead = false) {
+    this.scene.start("outro", { name: this.name, number: this.number, isDead: isDead });
   }
 
   /*
-    Helper function to show the score and coins
+    Helper function to show the score and hearts
     */
   addScore() {
     this.scoreCoins = this.add
@@ -92,5 +93,22 @@ export default class Transition extends Phaser.Scene {
       frameRate: 8,
     });
     this.scoreCoinsLogo.play({ key: "coinscore", repeat: -1 });
+
+    this.scoreHearts = this.add
+      .bitmapText(this.center_width+70, 70, "pixelFont", "x" + this.registry.get("hearts"), 20)
+      .setDropShadow(0, 4, 0x222222, 0.9)
+      .setOrigin(0)
+      .setScrollFactor(0);
+    this.scoreHeartsLogo = this.add
+      .sprite(this.center_width+50, 80, "heart")
+      .setScale(1.7)
+      .setOrigin(0.5)
+      .setScrollFactor(0);
+    const heartAnimation = this.anims.create({
+      key: "heartscore",
+      frames: this.anims.generateFrameNumbers("heart", { start: 0, end: 6 }),
+      frameRate: 8,
+    });
+    this.scoreHeartsLogo.play({ key: "heartscore", repeat: -1 });
   }
 }

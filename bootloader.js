@@ -39,7 +39,8 @@ export default class Bootloader extends Phaser.Scene {
       this.load.image("bg3", "/assets/images/bg3.png");
       this.load.image("ground", "/assets/images/tiles 01.png");
       this.load.image("blood", "/assets/images/BloodSplash.png");
-
+      this.load.image("chain", "assets/images/chain.png");
+      
       this.load.audio("build", "assets/sounds/build.mp3");
       this.load.audio("slash", "assets/sounds/slash.mp3");
       this.load.audio("coin", "assets/sounds/coin.mp3");
@@ -101,9 +102,14 @@ export default class Bootloader extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64,
     });
-
+    this.load.spritesheet("heart", "assets/images/heart_rotate.png", {
+      frameWidth: 20,
+      frameHeight: 20,
+    });
+    
     this.registry.set("score", 0);
     this.registry.set("coins", 0);
+    this.registry.set("hearts", 2);
   }
 
   createBars() {

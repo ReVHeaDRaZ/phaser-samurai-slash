@@ -28,7 +28,7 @@ body{
 }
 
 #gameCanvas{
-  border: 1px solid red;
+  border: 2px solid red;
   display: flex;
   z-index: 1;
   max-height: 90%;

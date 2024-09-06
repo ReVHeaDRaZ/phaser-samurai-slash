@@ -3,7 +3,7 @@ import Blow from './blow';
 import { JumpSmoke } from "./particle";
 
 class Player extends Phaser.GameObjects.Sprite {
-  constructor(scene, x, y, health = 10) {
+  constructor(scene, x, y, health = 2) {
     super(scene, x, y, "player");
     this.setOrigin(0.5);
     this.setScale(2);
@@ -29,6 +29,8 @@ class Player extends Phaser.GameObjects.Sprite {
     this.jumpVelocity = -400;
     this.invincible = false;
     this.health = health;
+    this.hurt = false;
+    this.hurtTween = null;
     this.dead = false;
     this.combo = 0;
     
@@ -80,7 +82,7 @@ class Player extends Phaser.GameObjects.Sprite {
     this.scene.anims.create({
       key: "die",
       frames: this.scene.anims.generateFrameNumbers("player", {start:98, end:111}),
-      frameRate: 10,
+      frameRate: 15,
       repeat: -1
     });
 
@@ -181,15 +183,27 @@ class Player extends Phaser.GameObjects.Sprite {
       if(this.jumping) this.anims.play("jumpUp",true);
       if(this.falling) this.anims.play("jumpDown", true);
     }
+    if (animation.key === "hurt") {
+      if(this.jumping) this.anims.play("jumpUp",true);
+      if(this.falling) this.anims.play("jumpDown", true);
+    }
   }
 
   hit() {
     this.health--;
+    this.hurt = true;
+    this.invincible = true;
+    this.hurtTween = this.scene.tweens.add({
+      targets: this,
+      duration: 500,
+      tint: { from: 0xffffff, to: 0xff5555 },
+      repeat: -1,
+    });
     this.anims.play("hurt", true);
-    this.body.enable = false;
     if (this.health === 0) {
       this.die();
-    }
+    }else
+      this.flashPlayer();
   }
 
   die() {
@@ -197,8 +211,27 @@ class Player extends Phaser.GameObjects.Sprite {
     this.anims.play("die", true);
     this.body.immovable = true;
     this.body.moves = false;
+    this.scene.updateHearts(-1);
     this.scene.restartScene();
   }
+
+  setNotHurt(){
+    this.hurtTween.stop();
+    this.hurt = false;
+  }
+
+  /*
+    When called it flashes the player while invincible, then set invisible to false after 1 sec.
+    */
+    flashPlayer() {
+      this.scene.tweens.add({
+        targets: this,
+        duration: 100,
+        alpha: { from: 0.5, to: 1 },
+        repeat: 10,
+        onComplete: () => {this.invincible=false}
+      });
+    }
 
 }
 

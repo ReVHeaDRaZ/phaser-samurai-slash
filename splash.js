@@ -35,13 +35,22 @@ export default class Splash extends Phaser.Scene {
     Helper function to show the title letter by letter
     */
   showTitle() {
-    this.playAudioRandomly("slash");
     "SAMURAI".split("").forEach((letter, i) => {
+      if(i==1){
+        this.slashMark = this.add.ellipse(30,70,450,10,0xffffff).setOrigin(0).setDepth(1);
+        this.tweens.add({
+          targets: this.slashMark,
+          duration: 300,
+          alpha: { from: 1, to: 0 },
+          scale: { from: 0, to: 1 },
+          repeat: 0,
+          onComplete: ()=>{this.slashMark.destroy()}
+        })
+      }
       this.time.delayedCall(
-        100 * (i + 1),
+        50 * (i + 1),
         () => {
-          //this.playAudioRandomly("slash");
-
+          this.playAudioRandomly("slash");
           if (Phaser.Math.Between(0, 5) > 2) this.playAudioRandomly("stone");
           let text = this.add
             .bitmapText(70 * (i + 1) - 30, 70, "hammerfont", letter, 60)
@@ -59,8 +68,19 @@ export default class Splash extends Phaser.Scene {
 
     "SLASHER".split("").forEach((letter, i) => {
       this.time.delayedCall(
-        100 * (i + 1) + 800,
+        50 * (i + 1) + 800,
         () => {
+          if(i==1){
+            this.slashMark = this.add.ellipse(30,170,450,10,0xffffff).setOrigin(0).setDepth(1);
+            this.tweens.add({
+              targets: this.slashMark,
+              duration: 300,
+              alpha: { from: 1, to: 0 },
+              scale: { from: 0, to: 1 },
+              repeat: 0,
+              onComplete: ()=>{this.slashMark.destroy()}
+            })
+          }
           this.playAudioRandomly("slash");
           if (Phaser.Math.Between(0, 5) > 2) this.playAudioRandomly("stone");
           let text = this.add

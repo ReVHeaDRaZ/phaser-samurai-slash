@@ -4,6 +4,8 @@ import Coin from "./coin";
 import Turn from "./turn";
 import Zombie from "./zombie";
 import { sizes } from './sizes';
+import Heart from "./heart";
+import Platform from "./platform";
 
 export default class GameScene extends Phaser.Scene{
   constructor(){
@@ -11,6 +13,7 @@ export default class GameScene extends Phaser.Scene{
     this.player = null;
     this.score = 0;
     this.scoreText = null;
+    this.levelFinished = false;
   }
 
   init(data) {
@@ -24,7 +27,6 @@ export default class GameScene extends Phaser.Scene{
     this.cameras.main.setBackgroundColor(0x62a2bf); //(0x00b140)//(0x62a2bf)
     
     this.createParallaxBackground();
-
     this.createMap();
     
     this.cameras.main.setBounds(0, 0, 20920 * 2, 20080 * 2);
@@ -36,7 +38,7 @@ export default class GameScene extends Phaser.Scene{
     
     this.loadAudios();
     this.playMusic();
-    this.addScore();
+    this.addHUD();
   }
   update(){
     this.player.update();
@@ -45,7 +47,11 @@ export default class GameScene extends Phaser.Scene{
       bg.sprite.tilePositionX = this.cameras.main.scrollX * bg.ratioX;
     }
 
-    if (this.player.y > 550) this.restartScene();
+    if (this.player.y > 540 && !this.player.dead){
+      this.player.dead = true;
+      this.updateHearts(-1);
+      this.restartScene();
+    }
   }
 
 
@@ -87,10 +93,10 @@ export default class GameScene extends Phaser.Scene{
     this.turnGroup = this.add.group();
     this.exitGroup = this.add.group();
     this.coins = this.add.group();
+    this.hearts = this.add.group();
     this.blows = this.add.group();
-    this.platformsGroup = this.physics.add.staticGroup();
+    this.platformGroup = this.add.group();
 
-    // this.spawnCoin(sizes.width-100,135);
     this.addsObjects();
     this.addColliders();
   }
@@ -109,11 +115,15 @@ export default class GameScene extends Phaser.Scene{
         let coin = new Coin(this, object.x, object.y);
         this.coins.add(coin);
       }
-
+      if (object.name === "heart") {
+        let heart = new Heart(this, object.x, object.y);
+        this.hearts.add(heart);
+      }
       if (object.name === "platform") {
         this.platformGroup.add(
-          new Platform(this, object.x, object.y, object.type)
+          new Platform(this, object.x, object.y)
         );
+        console.log(object);
       }
 
       if (object.name === "turn") {
@@ -148,7 +158,7 @@ export default class GameScene extends Phaser.Scene{
         this.anims.create({
           key: "demon_door_open",
           frames: this.anims.generateFrameNumbers('demon_door', {start:3, end:3}),
-          frameRate: 5,
+          frameRate: 1,
           repeat: -1,
         });
       }
@@ -177,7 +187,7 @@ export default class GameScene extends Phaser.Scene{
       const playerPosition = this.objectsLayer.objects.find(
         (object) => object.name === "playerStart"
       );
-      this.player = new Player(this, playerPosition.x, playerPosition.y, 0);
+      this.player = new Player(this, playerPosition.x, playerPosition.y, 2);
   
       this.physics.add.collider(this.player, this.platform);
       this.physics.add.collider(this.player, this.platformGroup);
@@ -191,16 +201,27 @@ export default class GameScene extends Phaser.Scene{
         },
         this
       );
+      this.physics.add.overlap(
+        this.player,
+        this.hearts,
+        this.pickHeart,
+        () => {
+          return true;
+        },
+        this
+      );
     
       this.physics.add.overlap(
         this.player,
         this.exitGroup,
         () => {
-          
-          this.exitDoor.play("demon_door",true);
-          this.exitDoor.on("animationcomplete", this.doorOpen, this);
-          this.playAudio("stage");
-          this.time.delayedCall(1000, () => this.finishScene(), null, this);
+          if(!this.levelFinished){
+            this.levelFinished = true;
+            this.exitDoor.play("demon_door",true);
+            this.exitDoor.on("animationcomplete", this.doorOpen, this);
+            this.playAudio("stage");
+            this.time.delayedCall(1000, () => this.finishScene(), null, this);
+          }
         },
         () => {
           return true;
@@ -242,7 +263,7 @@ export default class GameScene extends Phaser.Scene{
 
   spawnCoin(x,y) {
     this.time.delayedCall(
-      500,
+      200,
       () => {
         this.coins.add(new Coin(this, x, y));
       },
@@ -251,16 +272,38 @@ export default class GameScene extends Phaser.Scene{
     );
   }
 
+  pickHeart(player, heart) {
+    if (!heart.disabled) {
+      heart.pick();
+      this.playAudio("coin");
+      if(!this.player.hurt)
+        this.updateHearts(1);
+      else
+        this.player.setNotHurt();
+    }
+  }
+
+  spawnHeart(x,y) {
+    this.time.delayedCall(
+      200,
+      () => {
+        this.hearts.add(new Heart(this, x, y));
+      },
+      null,
+      this
+    );
+  }
+
   /*
-    This function is called when the player hits a foe. If the player is invincible (because of a power-up), then the foe dies. If not, then the player dies.
+    This function is called when the player hits a foe. If the player is invincible (because of a power-up), do nothing. If not, then the player is hit.
   */
   hitPlayer(player, foe) {
-    if (player.invincible) {
-      foe.death();
-      this.playAudio("foedeath");
-    } else if (!player.dead && this.number > 0) {
-      player.die();
-      this.playAudio("death");
+    foe.turn();
+    if (!player.invincible) {
+      if (!player.dead) {
+        player.hit();
+        this.playAudio("death");
+      }
     }
   }
   
@@ -320,9 +363,9 @@ export default class GameScene extends Phaser.Scene{
     });
   }
 
-  addScore() {
+  addHUD() {
     this.scoreCoins = this.add
-      .bitmapText(65, 15, "pixelFont", "x0", 15)
+      .bitmapText(65, 15, "pixelFont", "x" + this.registry.get("coins"), 15)
       .setDropShadow(0, 4, 0x222222, 0.9)
       .setOrigin(0)
       .setScrollFactor(0);
@@ -337,6 +380,23 @@ export default class GameScene extends Phaser.Scene{
       frameRate: 8,
     });
     this.scoreCoinsLogo.play({ key: "coinscore", repeat: -1 });
+
+    this.scoreHearts = this.add
+      .bitmapText(sizes.width-65, 15, "pixelFont", "x" + this.registry.get("hearts"), 15)
+      .setDropShadow(0, 4, 0x222222, 0.9)
+      .setOrigin(0)
+      .setScrollFactor(0);
+    this.scoreHeartsLogo = this.add
+      .sprite(sizes.width-80, 20, "heart")
+      .setScale(1.5)
+      .setOrigin(0.5)
+      .setScrollFactor(0);
+    const heartAnimation = this.anims.create({
+      key: "heartscore",
+      frames: this.anims.generateFrameNumbers("heart", { start: 0, end: 6 }),
+      frameRate: 8,
+    });
+    this.scoreHeartsLogo.play({ key: "heartscore", repeat: -1 });
   }
 
   /*
@@ -372,6 +432,19 @@ export default class GameScene extends Phaser.Scene{
       this.tweens.add({
         targets: [this.scoreCoinsLogo],
         scale: { from: 1, to: 0.5 },
+        duration: 50,
+        repeat: 5,
+      });
+    }
+
+    updateHearts(amount) {
+      console.log("UpdateHearts");
+      const hearts = +this.registry.get("hearts") + amount;
+      this.registry.set("hearts", hearts);
+      this.scoreHearts.setText("x" + hearts);
+      this.tweens.add({
+        targets: [this.scoreHeartsLogo],
+        scale: { from: 1.5, to: 1 },
         duration: 50,
         repeat: 5,
       });

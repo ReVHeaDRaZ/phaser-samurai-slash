@@ -24,7 +24,7 @@ const config = {
       debug: true
     }
   },
-  scene: [Bootloader, Splash, Transition, GameScene]
+  scene: [Bootloader, Splash, Transition, GameScene, Outro]
 }
 
 const game = new Phaser.Game(config);

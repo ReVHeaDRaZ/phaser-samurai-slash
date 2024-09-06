@@ -3,8 +3,9 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "scene1.tmx",
     "expandedProjectPaths": [
+        "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -43,7 +44,7 @@
             "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 560.5,
+                "x": 1078.5,
                 "y": 329.5
             }
         },
@@ -55,9 +56,9 @@
                 3
             ],
             "scale": 1.5,
-            "selectedLayer": 0,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 307.66666666666663,
+                "x": 756.3333333333333,
                 "y": 335
             }
         },
@@ -65,15 +66,18 @@
             "scaleInDock": 1
         }
     },
-    "last.exportedFilePath": "C:/Users/Ryan/HtmlProjects/phaser/platformer/public/assets/maps",
+    "last.exportedFilePath": "C:/Users/Ryan/HtmlProjects/phaser/phaser-samurai-slash/public/assets/maps",
     "last.imagePath": "E:/GrafixStorage/8Bit/Environment/oak_woods",
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
     "openFiles": [
+        "scene0.tmx",
+        "scene1.tmx"
     ],
     "project": "scene0.tiled-project",
     "recentFiles": [
         "scene0.tmx",
+        "scene1.tmx",
         "C:/Users/Ryan/HtmlProjects/phaser/wallhammer/public/assets/maps/scene0.json",
         "landscape.tsx",
         "grass.tsx"
