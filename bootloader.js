@@ -38,7 +38,6 @@ export default class Bootloader extends Phaser.Scene {
       this.load.image("bg1", "/assets/images/bg1.png");
       this.load.image("bg2", "/assets/images/bg2.png");
       this.load.image("bg3", "/assets/images/bg3.png");
-      this.load.image("ground", "/assets/images/tiles 01.png");
       this.load.image("blood", "/assets/images/BloodSplash.png");
       this.load.image("chain", "assets/images/chain.png");
 
@@ -72,6 +71,7 @@ export default class Bootloader extends Phaser.Scene {
     this.load.tilemapTiledJSON("scene2", "assets/maps/scene2.tmj");
     
     this.load.image("oak_woods", "assets/maps/oak_woods_tileset.png");
+    this.load.image("background", "assets/maps/background_tileset.png");
 
     this.load.bitmapFont(
       "pixelFont",

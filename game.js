@@ -77,8 +77,7 @@ export default class GameScene extends Phaser.Scene{
       tileHeight: 24,
     });
 
-    //this.tileSetBg = this.tileMap.addTilesetImage("bg1");
-    console.log(this.tileMap);
+   this.tileSetBg = this.tileMap.addTilesetImage("background");
     this.tileMap.createLayer("background", this.tileSetBg);
 
     this.tileSet = this.tileMap.addTilesetImage("oak_woods");

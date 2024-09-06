@@ -64,6 +64,20 @@
         },
         "scene1.tmx#oak_woods": {
             "scaleInDock": 1
+        },
+        "scene2.tmx": {
+            "expandedObjectLayers": [
+                3
+            ],
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 253.66666666666666,
+                "y": 349
+            }
+        },
+        "scene2.tmx#oak_woods": {
+            "scaleInDock": 1
         }
     },
     "last.exportedFilePath": "C:/Users/Ryan/HtmlProjects/phaser/phaser-samurai-slash/public/assets/maps",
