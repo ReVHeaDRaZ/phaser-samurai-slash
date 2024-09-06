@@ -25,6 +25,7 @@ class Player extends Phaser.GameObjects.Sprite {
     this.jumping = false;
     this.falling = false;
     this.attacking = false;
+    this.timeBetweenAttacks = 300;
     this.walkVelocity = 200;
     this.jumpVelocity = -400;
     this.invincible = false;
@@ -93,7 +94,7 @@ class Player extends Phaser.GameObjects.Sprite {
   update() {
     if (this.dead) return;
     
-    if (this.body.velocity.y >= 0) {
+    if (this.body.velocity.y > 150) {
       this.falling = true;
       if (!this.attacking ) this.anims.play("jumpDown", true);
     }
@@ -106,7 +107,13 @@ class Player extends Phaser.GameObjects.Sprite {
       }
     }
 
-    if ( (Phaser.Input.Keyboard.JustDown(this.cursor.up) || Phaser.Input.Keyboard.JustDown(this.W)) && this.body.blocked.down) {
+    if (this.body.blocked.down) {
+      this.jumping = false;
+      this.falling = false;
+    }
+
+
+    if ( (Phaser.Input.Keyboard.JustDown(this.cursor.up) || Phaser.Input.Keyboard.JustDown(this.W)) && !this.falling && !this.jumping) {
       this.body.setVelocityY(this.jumpVelocity);
       if (!this.attacking ) this.anims.play("jumpUp", true);
       this.scene.playAudio("jump");
@@ -163,6 +170,7 @@ class Player extends Phaser.GameObjects.Sprite {
       }
 
       this.attacking = true;
+      this.scene.time.delayedCall(this.timeBetweenAttacks, () => this.attacking = false );
       const offsetX = this.right ? 40 : -40;
       const size = 42;
       this.scene.blows.add(new Blow(this.scene, this.x + offsetX, this.y, size, size/2));
@@ -175,9 +183,6 @@ class Player extends Phaser.GameObjects.Sprite {
   }
 
   animationComplete(animation, frame) {
-    if (animation.key === "playerground") {
-      this.anims.play("idle", true);
-    }
     if (animation.key === "attack1" || animation.key === "attack2") {
       this.attacking = false;
       if(this.jumping) this.anims.play("jumpUp",true);
@@ -224,6 +229,10 @@ class Player extends Phaser.GameObjects.Sprite {
     this.health = 2;
   }
 
+  setCanAttack(){
+    console.log(this);
+    this.attacking = false;
+  }
   /*
     When called it flashes the player while invincible, then set invisible to false after 1 sec.
     */

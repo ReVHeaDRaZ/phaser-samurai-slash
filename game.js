@@ -122,9 +122,9 @@ export default class GameScene extends Phaser.Scene{
       }
       if (object.name === "platform") {
         this.platformGroup.add(
-          new Platform(this, object.x, object.y)
+          new Platform(this, object.x, object.y,4)
         );
-        console.log(object);
+        console.log(object.properties);
       }
 
       if (object.name === "turn") {

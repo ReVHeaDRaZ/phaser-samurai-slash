@@ -24,6 +24,7 @@ export default class Bootloader extends Phaser.Scene {
       "complete",
       () => {
         this.scene.start("splash");
+        //this.scene.start("game", {name: "STAGE", number: 2});  // Use for testing levels
       },
       this
     );
@@ -40,7 +41,7 @@ export default class Bootloader extends Phaser.Scene {
       this.load.image("ground", "/assets/images/tiles 01.png");
       this.load.image("blood", "/assets/images/BloodSplash.png");
       this.load.image("chain", "assets/images/chain.png");
-      
+
       this.load.audio("build", "assets/sounds/build.mp3");
       this.load.audio("slash", "assets/sounds/slash.mp3");
       this.load.audio("coin", "assets/sounds/coin.mp3");
@@ -68,6 +69,7 @@ export default class Bootloader extends Phaser.Scene {
 
     this.load.tilemapTiledJSON("scene0", "assets/maps/scene0.tmj");
     this.load.tilemapTiledJSON("scene1", "assets/maps/scene1.tmj");
+    this.load.tilemapTiledJSON("scene2", "assets/maps/scene2.tmj");
     
     this.load.image("oak_woods", "assets/maps/oak_woods_tileset.png");
 
