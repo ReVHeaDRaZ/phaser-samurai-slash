@@ -42,11 +42,14 @@
                 3
             ],
             "scale": 1,
-            "selectedLayer": 0,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 1078.5,
+                "x": 908.5,
                 "y": 329.5
             }
+        },
+        "scene0.tmx#background": {
+            "scaleInDock": 1
         },
         "scene0.tmx#oak_woods": {
             "scaleInDock": 1
@@ -56,11 +59,14 @@
                 3
             ],
             "scale": 1.5,
-            "selectedLayer": 1,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 756.3333333333333,
+                "x": 1955.3333333333333,
                 "y": 335
             }
+        },
+        "scene1.tmx#background": {
+            "scaleInDock": 1
         },
         "scene1.tmx#oak_woods": {
             "scaleInDock": 1
@@ -81,7 +87,7 @@
         }
     },
     "last.exportedFilePath": "C:/Users/Ryan/HtmlProjects/phaser/phaser-samurai-slash/public/assets/maps",
-    "last.imagePath": "E:/GrafixStorage/8Bit/Environment/oak_woods",
+    "last.imagePath": "C:/Users/Ryan/HtmlProjects/phaser/phaser-samurai-slash/public/assets/maps",
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
     "openFiles": [
@@ -96,6 +102,7 @@
         "landscape.tsx",
         "grass.tsx"
     ],
+    "tileset.embedInMap": true,
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
         "height": 24,
