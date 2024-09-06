@@ -45,7 +45,7 @@ class Heart extends Phaser.GameObjects.Sprite {
     this.disabled = true;
     this.scene.tweens.add({
       targets: this,
-      duration: 500,
+      duration: 300,
       x: { from: this.x, to: x },
       y: { from: this.y, to: y },
       scale: { from: 1.7, to: 1.5 },
