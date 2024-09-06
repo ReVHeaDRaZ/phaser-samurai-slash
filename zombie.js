@@ -17,7 +17,7 @@ export default class Zombie extends Phaser.Physics.Arcade.Sprite {
     this.scene.anims.create({
       key: this.name,
       frames: this.scene.anims.generateFrameNumbers(this.name, { start: 9, end: 16, }),
-      frameRate: 15,
+      frameRate: 20,
       repeat: -1,
     });
     this.scene.anims.create({
@@ -26,7 +26,7 @@ export default class Zombie extends Phaser.Physics.Arcade.Sprite {
       frameRate: 8,
     });
     this.anims.play(this.name, true);
-    this.body.setVelocityX(this.direction * 80);
+    this.body.setVelocityX(this.direction * 70);
     this.flipX = this.direction < 0;
     this.on("animationcomplete", this.animationComplete, this);
   }
@@ -34,7 +34,7 @@ export default class Zombie extends Phaser.Physics.Arcade.Sprite {
   turn() {
     this.direction = -this.direction;
     this.flipX = this.direction < 0;
-    this.body.setVelocityX(this.direction * 80);
+    this.body.setVelocityX(this.direction * 70);
   }
    
   death() {
