@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "scene1.tmx",
+    "activeFile": "scene2.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -76,11 +76,14 @@
                 3
             ],
             "scale": 1.5,
-            "selectedLayer": 0,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 253.66666666666666,
+                "x": 2869.333333333333,
                 "y": 349
             }
+        },
+        "scene2.tmx#background": {
+            "scaleInDock": 1
         },
         "scene2.tmx#oak_woods": {
             "scaleInDock": 1
@@ -92,12 +95,14 @@
     "map.lastUsedFormat": "tmx",
     "openFiles": [
         "scene0.tmx",
-        "scene1.tmx"
+        "scene1.tmx",
+        "scene2.tmx"
     ],
     "project": "scene0.tiled-project",
     "recentFiles": [
         "scene0.tmx",
         "scene1.tmx",
+        "scene2.tmx",
         "C:/Users/Ryan/HtmlProjects/phaser/wallhammer/public/assets/maps/scene0.json",
         "landscape.tsx",
         "grass.tsx"

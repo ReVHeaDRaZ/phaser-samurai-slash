@@ -43,12 +43,14 @@ export default class Outro extends Phaser.Scene {
     this.registry.set("coins", 0);
     
     this.showHistory();
+    this.playMusic();
     
     this.input.keyboard.on("keydown-SPACE", this.startSplash, this);
     this.input.keyboard.on("keydown-ENTER", this.startSplash, this);
   }
 
   startSplash() {
+    if (this.theme) this.theme.stop();
     this.scene.start("splash");
   }
 
@@ -86,30 +88,51 @@ export default class Outro extends Phaser.Scene {
 
   /*
     Helper function to show the total score then reset hearts an coins
-    */
-    showScore() {
-      this.scoreCoins = this.add
-        .bitmapText(
-          this.center_width + 32,
-          this.center_height + 95,
-          "pixelFont",
-          "x" + this.totalCoins,
-          30
-        )
-        .setDropShadow(0, 4, 0x222222, 0.9)
-        .setOrigin(0.5)
-        .setScrollFactor(0);
-      this.scoreCoinsLogo = this.add
-        .sprite(this.center_width - 32, this.center_height + 95, "coin")
-        .setScale(0.7)
-        .setOrigin(0.5)
-        .setScrollFactor(0);
-      const coinAnimation = this.anims.create({
-        key: "coinscore",
-        frames: this.anims.generateFrameNumbers("coin", { start: 0, end: 7 }),
-        frameRate: 8,
-      });
-      this.scoreCoinsLogo.play({ key: "coinscore", repeat: -1 });
+  */
+  showScore() {
+    this.scoreCoins = this.add
+      .bitmapText(
+        this.center_width + 32,
+        this.center_height + 95,
+        "pixelFont",
+        "x" + this.totalCoins,
+        30
+      )
+      .setDropShadow(0, 4, 0x222222, 0.9)
+      .setOrigin(0.5)
+      .setScrollFactor(0);
+    this.scoreCoinsLogo = this.add
+      .sprite(this.center_width - 32, this.center_height + 95, "coin")
+      .setScale(0.7)
+      .setOrigin(0.5)
+      .setScrollFactor(0);
+    const coinAnimation = this.anims.create({
+      key: "coinscore",
+      frames: this.anims.generateFrameNumbers("coin", { start: 0, end: 7 }),
+      frameRate: 8,
+    });
+    this.scoreCoinsLogo.play({ key: "coinscore", repeat: -1 });
 
-    }
+  }
+
+    
+  playMusic(theme = "outro") {
+    let temp;
+    if(this.isDead)
+      temp = "Lose";
+    else
+      temp = "Win";
+
+    this.theme = this.sound.add(theme + temp);
+    this.theme.stop();
+    this.theme.play({
+      mute: false,
+      volume: 1,
+      rate: 1,
+      detune: 0,
+      seek: 0,
+      loop: true,
+      delay: 0,
+    });
+  }
 }

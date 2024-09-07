@@ -20,50 +20,57 @@ export default class Transition extends Phaser.Scene {
     this.center_height = this.height / 2;
     this.cameras.main.setBackgroundColor(0x62a2bf); //(0x00b140)//(0x62a2bf)
 
-    if (this.registry.get("hearts") <= 0) this.loadOutro(true);
-    if (this.number === 5) this.loadOutro();
+    if (this.registry.get("hearts") <= 0)
+      this.loadOutro(true);
+    else if (this.number === 5)
+      this.loadOutro();
+    else{
+      this.addScore();
 
-    this.addScore();
+      this.add.sprite(this.center_width, this.center_height - 170, "player").setScale(3);
+      this.add
+        .bitmapText(
+          this.center_width,
+          this.center_height - 10,
+          "pixelFont",
+          messages[this.number],
+          30
+        )
+        .setOrigin(0.5);
+      this.add
+        .bitmapText(
+          this.center_width,
+          this.center_height + 30,
+          "pixelFont",
+          "Ready?",
+          20
+        )
+        .setOrigin(0.5);
+      this.input.keyboard.on("keydown-ENTER", () => this.loadNext(), this);
+      this.input.keyboard.on("keydown-SPACE", () => this.loadNext(), this);
+      this.time.delayedCall(
+        3000,
+        () => {
+          this.loadNext();
+        },
+        null,
+        this
+      );
 
-    this.add.sprite(this.center_width, this.center_height - 170, "player").setScale(3);
-    this.add
-      .bitmapText(
-        this.center_width,
-        this.center_height - 10,
-        "pixelFont",
-        messages[this.number],
-        30
-      )
-      .setOrigin(0.5);
-    this.add
-      .bitmapText(
-        this.center_width,
-        this.center_height + 30,
-        "pixelFont",
-        "Ready?",
-        20
-      )
-      .setOrigin(0.5);
-    this.input.keyboard.on("keydown-ENTER", () => this.loadNext(), this);
-    this.input.keyboard.on("keydown-SPACE", () => this.loadNext(), this);
-    this.time.delayedCall(
-      3000,
-      () => {
-        this.loadNext();
-      },
-      null,
-      this
-    );
+      this.playMusic();
+    }
   }
 
   /*
     These functions are used to load the next scene
     */
   loadNext() {
+    if (this.theme) this.theme.stop();
     this.scene.start("game", { name: this.name, number: this.number });
   }
 
   loadOutro(isDead = false) {
+    if (this.theme) this.theme.stop();
     this.scene.start("outro", { name: this.name, number: this.number, isDead: isDead });
   }
 
@@ -110,5 +117,19 @@ export default class Transition extends Phaser.Scene {
       frameRate: 8,
     });
     this.scoreHeartsLogo.play({ key: "heartscore", repeat: -1 });
+  }
+
+  playMusic(theme = "transition") {
+    this.theme = this.sound.add(theme);
+    this.theme.stop();
+    this.theme.play({
+      mute: false,
+      volume: 1,
+      rate: 1,
+      detune: 0,
+      seek: 0,
+      loop: true,
+      delay: 0,
+    });
   }
 }
