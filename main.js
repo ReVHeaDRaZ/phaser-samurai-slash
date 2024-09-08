@@ -6,7 +6,7 @@ import Outro from './outro';
 import Transition from './transition';
 import GameScene from './game';
 import { sizes } from './sizes';
-
+import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin.js';
 
 const config = {
   type: Phaser.WEBGL,
@@ -23,6 +23,14 @@ const config = {
       gravity:{y: 800},
       debug: true
     }
+  },
+  plugins: {
+    global: [{
+        key: 'rexVirtualJoystick',
+        plugin: VirtualJoystickPlugin,
+        start: true
+    },
+    ]
   },
   scene: [Bootloader, Splash, Transition, GameScene, Outro]
 }

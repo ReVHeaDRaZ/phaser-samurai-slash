@@ -21,9 +21,7 @@ export default class GameScene extends Phaser.Scene{
     this.number = data.number;
   }
 
-  preload(){
-    this.load.plugin('rexvirtualjoystickplugin', "./assets/js/rexvirtualjoystickplugin.min", true);
-  }
+  preload(){}
 
   create(){
     this.levelFinished = false;

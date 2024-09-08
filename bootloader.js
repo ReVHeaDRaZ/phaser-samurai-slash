@@ -40,6 +40,8 @@ export default class Bootloader extends Phaser.Scene {
       this.load.image("bg3", "assets/images/bg3.png");
       this.load.image("blood", "assets/images/BloodSplash.png");
       this.load.image("chain", "assets/images/chain.png");
+      this.load.image("attackButton", "assets/images/attackButton.png");
+      this.load.image("moveButton", "assets/images/moveButton.png");
 
       this.load.audio("build", "assets/sounds/build.mp3");
       this.load.audio("slash", "assets/sounds/slash.mp3");

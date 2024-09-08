@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import Blow from './blow';
 import { JumpSmoke } from "./particle";
+import { sizes } from './sizes';
 
 class Player extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, health = 2) {
@@ -16,6 +17,23 @@ class Player extends Phaser.GameObjects.Sprite {
     this.A = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     this.S = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     this.D = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+
+    this.joystick = this.scene.plugins.get('rexVirtualJoystick').add(this.scene, {
+      x: 100,
+      y: sizes.height-100,
+      radius: 100,
+      base: this.scene.add.image(0,0, 'moveButton').setDisplaySize(108, 108).setAlpha(0.01),
+      thumb: this.scene.add.image(0, 0, 'moveButton').setDisplaySize(64, 64).setAlpha(0.25),
+      dir: '8dir',
+      // forceMin: 16,
+      // fixed: true,
+      // enable: true
+    });
+    this.joystickCursor = this.joystick.createCursorKeys();
+    const attackButton = this.scene.add.sprite(sizes.width-100,sizes.height-100,"attackButton").setScrollFactor(0).setAlpha(0.25);
+    attackButton.setInteractive().on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN,() => this.attack());
+    
+    
 
     this.right = true;
     this.body.setSize(20, 30);
@@ -36,7 +54,7 @@ class Player extends Phaser.GameObjects.Sprite {
     this.combo = 0;
     
   }
-
+  test(){console.log("FUCK")}
   init() {
     this.scene.anims.create({
       key: "idle",
@@ -113,20 +131,20 @@ class Player extends Phaser.GameObjects.Sprite {
     }
 
 
-    if ( (Phaser.Input.Keyboard.JustDown(this.cursor.up) || Phaser.Input.Keyboard.JustDown(this.W)) && !this.falling && !this.jumping) {
+    if ( (Phaser.Input.Keyboard.JustDown(this.cursor.up) || Phaser.Input.Keyboard.JustDown(this.W) || Phaser.Input.Keyboard.JustDown(this.joystickCursor.up)) && !this.falling && !this.jumping) {
       this.body.setVelocityY(this.jumpVelocity);
       if (!this.attacking ) this.anims.play("jumpUp", true);
       this.scene.playAudio("jump");
       this.jumping = true;
       this.jumpSmoke();
-    }else if (this.cursor.right.isDown || this.D.isDown) {
+    }else if (this.cursor.right.isDown || this.D.isDown || this.joystickCursor.right.isDown) {
       if (this.body.blocked.down) {
         if (!this.attacking ) this.anims.play("run", true);
       }
       this.right = true;
       this.flipX = false;
       this.body.setVelocityX(this.walkVelocity);
-    }else if (this.cursor.left.isDown || this.A.isDown) {
+    }else if (this.cursor.left.isDown || this.A.isDown || this.joystickCursor.left.isDown) {
       if (this.body.blocked.down) {
         if (!this.attacking ) this.anims.play("run", true);
       }
