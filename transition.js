@@ -48,6 +48,7 @@ export default class Transition extends Phaser.Scene {
         .setOrigin(0.5);
       this.input.keyboard.on("keydown-ENTER", () => this.loadNext(), this);
       this.input.keyboard.on("keydown-SPACE", () => this.loadNext(), this);
+      this.input.on('pointerdown', () => this.loadNext(), this);
       this.time.delayedCall(
         3000,
         () => {

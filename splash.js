@@ -16,6 +16,7 @@ export default class Splash extends Phaser.Scene {
 
     this.input.keyboard.on("keydown-SPACE", () => this.startGame(), this);
     this.input.keyboard.on("keydown-ENTER", () => this.startGame(), this);
+    this.input.on('pointerdown', () => this.startGame(), this);
     this.showTitle();
     this.playMusic();
     this.playAudioRandomly("stone");

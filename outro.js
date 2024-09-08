@@ -47,6 +47,7 @@ export default class Outro extends Phaser.Scene {
     
     this.input.keyboard.on("keydown-SPACE", this.startSplash, this);
     this.input.keyboard.on("keydown-ENTER", this.startSplash, this);
+    this.input.on('pointerdown', this.startSplash, this);
   }
 
   startSplash() {

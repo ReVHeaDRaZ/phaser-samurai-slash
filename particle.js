@@ -69,8 +69,8 @@ export class JumpSmoke extends Phaser.GameObjects.Ellipse {
 
 export class Debris extends Phaser.GameObjects.Rectangle {
   constructor(scene, x, y, color = 0xb03e00, width, height, gravity = false) {
-    width = width || Phaser.Math.Between(15, 30);
-    height = height || Phaser.Math.Between(15, 30);
+    width = width || Phaser.Math.Between(10, 25);
+    height = height || Phaser.Math.Between(10, 25);
     super(scene, x, y + 5, width, height, color);
     scene.add.existing(this);
     scene.physics.add.existing(this);

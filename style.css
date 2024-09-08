@@ -31,6 +31,6 @@ body{
   border: 2px solid red;
   display: flex;
   z-index: 1;
-  max-height: 90%;
-  margin-bottom: 10px;
+  max-height: 95%;
+  margin-bottom: 5px;
 }
