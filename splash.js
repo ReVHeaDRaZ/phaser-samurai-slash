@@ -57,7 +57,7 @@ export default class Splash extends Phaser.Scene {
             .bitmapText(70 * (i + 1) - 30, 70, "hammerfont", letter, 60)
             .setTint(0xca6702)
             .setOrigin(0.5)
-            .setDropShadow(4, 6, 0xf09937, 0.9);
+            .setDropShadow(3, 5, 0xf09937, 0.9);
           Array(Phaser.Math.Between(4, 6))
             .fill(0)
             .forEach((i) => new Debris(this, text.x, text.y, 0xca6702));
@@ -88,7 +88,7 @@ export default class Splash extends Phaser.Scene {
             .bitmapText(70 * (i + 1) - 30, 170, "hammerfont", letter, 60)
             .setTint(0xca6702)
             .setOrigin(0.5)
-            .setDropShadow(4, 6, 0xf09937, 0.9);
+            .setDropShadow(3, 5, 0xf09937, 0.9);
           Array(Phaser.Math.Between(4, 6))
             .fill(0)
             .forEach((i) => new Debris(this, text.x, text.y, 0xca6702));
