@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="150" height="22" tilewidth="24" tileheight="24" infinite="0" nextlayerid="4" nextobjectid="53">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="150" height="22" tilewidth="24" tileheight="24" infinite="0" nextlayerid="4" nextobjectid="56">
  <editorsettings>
   <export target="scene2.tmj" format="json"/>
  </editorsettings>
@@ -25,7 +25,7 @@
   <object id="26" name="turn" x="1700.5" y="339" width="33" height="20"/>
   <object id="14" name="turn" x="772.667" y="430.576" width="46.8182" height="23.6364"/>
   <object id="36" name="turn" x="380" y="431.243" width="46.8182" height="23.6364"/>
-  <object id="37" name="turn" x="-44.6667" y="429.242" width="46.8182" height="23.6364"/>
+  <object id="37" name="turn" x="-44.6667" y="1.242" width="46.8182" height="451.636"/>
   <object id="21" name="turn" x="627" y="259.909" width="46.8182" height="23.6364"/>
   <object id="22" name="turn" x="837" y="259.909" width="46.8182" height="23.6364"/>
   <object id="16" name="coin" x="1005.33" y="344"/>
@@ -68,6 +68,9 @@
   <object id="50" name="zombie" x="1072" y="432.667"/>
   <object id="51" name="zombie" x="1117.33" y="336.667"/>
   <object id="52" name="heart" x="1212" y="434.667"/>
+  <object id="53" name="turn" x="3595.33" y="-1.33333" width="21.3333" height="528.667"/>
+  <object id="54" name="bat" type="left" x="1331.33" y="302"/>
+  <object id="55" name="bat" type="right" x="1596" y="300"/>
  </objectgroup>
  <layer id="1" name="tileLayer2" width="150" height="22">
   <data encoding="csv">

@@ -114,6 +114,10 @@ export default class Bootloader extends Phaser.Scene {
       frameWidth: 20,
       frameHeight: 20,
     });
+    this.load.spritesheet("bat", "assets/images/bat.png", {
+      frameWidth: 16,
+      frameHeight: 16,
+    });
     
 
     if (this.sys.game.device.os.desktop)

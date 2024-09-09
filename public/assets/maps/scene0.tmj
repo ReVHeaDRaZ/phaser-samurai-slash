@@ -274,6 +274,39 @@
                  "width":58,
                  "x":1553,
                  "y":320.5
+                }, 
+                {
+                 "height":0,
+                 "id":24,
+                 "name":"bat",
+                 "rotation":0,
+                 "type":"left",
+                 "visible":true,
+                 "width":0,
+                 "x":1155,
+                 "y":334
+                }, 
+                {
+                 "height":445,
+                 "id":25,
+                 "name":"turn",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":13,
+                 "x":1666,
+                 "y":6
+                }, 
+                {
+                 "height":457,
+                 "id":30,
+                 "name":"turn",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":12,
+                 "x":1,
+                 "y":1
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -348,7 +381,7 @@
          "y":0
         }],
  "nextlayerid":4,
- "nextobjectid":24,
+ "nextobjectid":31,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.0",

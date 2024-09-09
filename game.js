@@ -3,6 +3,7 @@ import Player from '/player';
 import Coin from "./coin";
 import Turn from "./turn";
 import Zombie from "./zombie";
+import Bat from "./bat";
 import { sizes } from './sizes';
 import Heart from "./heart";
 import Platform from "./platform";
@@ -89,6 +90,7 @@ export default class GameScene extends Phaser.Scene{
     this.objectsLayer = this.tileMap.getObjectLayer("objects");
 
     this.zombieGroup = this.add.group();
+    this.batGroup = this.add.group();
     this.foesGroup = this.add.group();
     this.turnGroup = this.add.group();
     this.exitGroup = this.add.group();
@@ -110,6 +112,11 @@ export default class GameScene extends Phaser.Scene{
         let zombie = new Zombie(this, object.x, object.y, object.type);
         this.zombieGroup.add(zombie);
         this.foesGroup.add(zombie);
+      }
+      if (object.name === "bat") {
+        let bat = new Bat(this, object.x, object.y, object.type);
+        this.batGroup.add(bat);
+        this.foesGroup.add(bat);
       }
       if (object.name === "coin") {
         let coin = new Coin(this, object.x, object.y);
@@ -179,6 +186,24 @@ export default class GameScene extends Phaser.Scene{
       },
       this
     );
+    this.physics.add.collider(
+      this.batGroup,
+      this.turnGroup,
+      this.turnFoe,
+      () => {
+        return true;
+      },
+      this
+    );
+    this.physics.add.collider(
+      this.batGroup,
+      this.platform,
+      this.turnFoe,
+      () => {
+        return true;
+      },
+      this
+    );
 
     this.physics.add.collider(this.zombieGroup, this.platform);
   }
@@ -235,8 +260,18 @@ export default class GameScene extends Phaser.Scene{
 
       this.physics.add.overlap(
         this.blows,
-        this.foesGroup,
-        this.blowFoe,
+        this.zombieGroup,
+        this.hitZombie,
+        () => {
+          return true;
+        },
+        this
+      );
+
+      this.physics.add.overlap(
+        this.blows,
+        this.batGroup,
+        this.hitBat,
         () => {
           return true;
         },
@@ -246,6 +281,16 @@ export default class GameScene extends Phaser.Scene{
       this.physics.add.collider(
         this.player,
         this.zombieGroup,
+        this.hitPlayer,
+        () => {
+          return true;
+        },
+        this
+      );
+
+      this.physics.add.collider(
+        this.player,
+        this.batGroup,
         this.hitPlayer,
         () => {
           return true;
@@ -319,10 +364,15 @@ export default class GameScene extends Phaser.Scene{
   }
   
   /*
-    This is called when the player blows a foe. On the screen, the player generates a blow object and when this collides with a foe, the enemy is destroyed. It plays the sound and kills the foe.
+    This is called when the player hit a foe. On the screen, the player generates a blow object and when this collides with a foe, the enemy is destroyed. It plays the sound and kills the foe.
   */
-  blowFoe(blow, foe) {
+  hitZombie(blow, foe) {
     this.playAudio("behead");
+    foe.death();
+    this.spawnCoin(blow.x,blow.y);
+  }
+  hitBat(blow, foe) {
+    this.playAudio("kill");
     foe.death();
     this.spawnCoin(blow.x,blow.y);
   }

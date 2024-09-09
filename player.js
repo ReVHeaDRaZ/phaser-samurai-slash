@@ -51,7 +51,7 @@ class Player extends Phaser.GameObjects.Sprite {
     this.joystickCursor = this.joystick.createCursorKeys();
     this.attackButton.on('down', () => this.attack());
     this.jumpButton.on('down', () => this.jumpButtonPressed=true);
-   
+    this.jumpButton.on('up', () => this.jumpButtonPressed=false);
 
 
     this.right = true;
@@ -119,8 +119,8 @@ class Player extends Phaser.GameObjects.Sprite {
     this.scene.anims.create({
       key: "die",
       frames: this.scene.anims.generateFrameNumbers("player", {start:98, end:111}),
-      frameRate: 15,
-      repeat: -1
+      frameRate: 20,
+      repeat: 0
     });
 
     this.anims.play("idle", true);
@@ -178,6 +178,10 @@ class Player extends Phaser.GameObjects.Sprite {
       this.body.setVelocityX(0);
     }
     if (Phaser.Input.Keyboard.JustDown(this.spaceBar)) this.attack();
+    if(this.blow){
+      console.log(this.blow);
+      this.blow.y = this.y;
+    }
   }
 
   landSmoke() {
@@ -209,7 +213,8 @@ class Player extends Phaser.GameObjects.Sprite {
       this.scene.time.delayedCall(this.timeBetweenAttacks, () => this.attacking = false );
       const offsetX = this.right ? 40 : -40;
       const size = 42;
-      this.scene.blows.add(new Blow(this.scene, this.x + offsetX, this.y, size, size/2));
+      this.blow = new Blow(this.scene, this.x + offsetX, this.y, size, size);
+      this.scene.blows.add(this.blow);
       this.scene.playAudio("slash");
     }
   }
@@ -228,6 +233,8 @@ class Player extends Phaser.GameObjects.Sprite {
       if(this.jumping) this.anims.play("jumpUp",true);
       if(this.falling) this.anims.play("jumpDown", true);
     }
+    if (animation.key === "die")
+      this.setAlpha(0);
   }
 
   hit() {

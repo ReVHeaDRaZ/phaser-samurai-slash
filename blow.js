@@ -9,7 +9,7 @@ class Blow extends Phaser.GameObjects.Rectangle {
     this.scene.tweens.add({
       targets: this,
       duration: 300,
-      scale: { from: 1, to: 0 },
+      scale: { from: 1, to: 0.75 },
       onComplete: () => {
         this.destroy();
       },
