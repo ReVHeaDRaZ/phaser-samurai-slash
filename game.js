@@ -322,8 +322,7 @@ export default class GameScene extends Phaser.Scene{
     This is called when the player blows a foe. On the screen, the player generates a blow object and when this collides with a foe, the enemy is destroyed. It plays the sound and kills the foe.
   */
   blowFoe(blow, foe) {
-    this.playAudio("kill");
-    this.playAudio("foedeath");
+    this.playAudio("behead");
     foe.death();
     this.spawnCoin(blow.x,blow.y);
   }
@@ -343,12 +342,12 @@ export default class GameScene extends Phaser.Scene{
       death: this.sound.add("death"),
       jump: this.sound.add("jump"),
       kill: this.sound.add("kill"),
+      behead: this.sound.add("behead"),
       land: this.sound.add("land"),
       lunchbox: this.sound.add("lunchbox"),
       prize: this.sound.add("prize"),
       stone_fail: this.sound.add("stone_fail"),
       stone: this.sound.add("stone"),
-      foedeath: this.sound.add("foedeath"),
       stage: this.sound.add("stage"),
     };
   }

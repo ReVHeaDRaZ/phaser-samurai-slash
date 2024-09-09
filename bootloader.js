@@ -32,7 +32,7 @@ export default class Bootloader extends Phaser.Scene {
     Array(5)
       .fill(0)
       .forEach((_, i) => {
-        this.load.audio(`music${i}`, `assets/sounds/music${i}.mp3`);
+        this.load.audio(`music${i}`, `assets/sounds/music/music${i}.mp3`);
       });
 
       this.load.image("bg1", "assets/images/bg1.png");
@@ -50,17 +50,17 @@ export default class Bootloader extends Phaser.Scene {
       this.load.audio("death", "assets/sounds/death.mp3");
       this.load.audio("jump", "assets/sounds/jump.mp3");
       this.load.audio("kill", "assets/sounds/kill.mp3");
+      this.load.audio("behead", "assets/sounds/beheading-with-sword.mp3");
       this.load.audio("land", "assets/sounds/land.mp3");
       this.load.audio("lunchbox", "assets/sounds/lunchbox.mp3");
       this.load.audio("prize", "assets/sounds/prize.mp3");
       this.load.audio("stone_fail", "assets/sounds/stone_fail.mp3");
       this.load.audio("stone", "assets/sounds/stone.mp3");
-      this.load.audio("foedeath", "assets/sounds/foedeath.mp3");
       this.load.audio("stage", "assets/sounds/stage.mp3");
-      this.load.audio("splash", "assets/sounds/Engine9Loop.mp3");
-      this.load.audio("transition", "assets/sounds/ThisLoveLoop.mp3");
-      this.load.audio("outroWin", "assets/sounds/JusticeForAllLoop.mp3");
-      this.load.audio("outroLose", "assets/sounds/FadeToBlackLoop.mp3");
+      this.load.audio("splash", "assets/sounds/music/Engine9Loop.mp3");
+      this.load.audio("transition", "assets/sounds/music/ThisLoveLoop.mp3");
+      this.load.audio("outroWin", "assets/sounds/music/JusticeForAllLoop.mp3");
+      this.load.audio("outroLose", "assets/sounds/music/FadeToBlackLoop.mp3");
 
 
     Array(5)
