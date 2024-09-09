@@ -127,24 +127,41 @@ export default class Splash extends Phaser.Scene {
     Generates the instructions text for the player.
     */
   showInstructions() {
-    this.add
-      .bitmapText(this.center_width, 300, "pixelFont", "WASD/Arrows: move", 20)
-      .setOrigin(0.5);
-    this.add
-      .bitmapText(this.center_width, 350, "pixelFont", "SPACE: ATTACK", 20)
-      .setOrigin(0.5);
-    this.add
-      .bitmapText(this.center_width, 480, "pixelFont", "By RaZ", 15)
-      .setOrigin(0.5);
-    this.space = this.add
-      .bitmapText(
-        this.center_width,
-        670,
-        "pixelFont",
-        "Press SPACE to start",
-        30
-      )
-      .setOrigin(0.5);
+    if(this.registry.get("desktop")){
+      this.add
+        .bitmapText(this.center_width, 300, "pixelFont", "WASD/Arrows: move", 20)
+        .setOrigin(0.5);
+      this.add
+        .bitmapText(this.center_width, 350, "pixelFont", "SPACE: ATTACK", 20)
+        .setOrigin(0.5);
+      this.add
+        .bitmapText(this.center_width, 480, "pixelFont", "By RaZ", 15)
+        .setOrigin(0.5);
+      this.space = this.add
+        .bitmapText(
+          this.center_width,
+          530,
+          "pixelFont",
+          "Press SPACE to start",
+          20
+        )
+        .setOrigin(0.5);
+    }else{
+      this.add
+        .bitmapText(this.center_width, 480, "pixelFont", "By RaZ", 15)
+        .setOrigin(0.5);
+      this.space = this.add
+        .bitmapText(
+          this.center_width,
+          530,
+          "pixelFont",
+          "Touch to start",
+          20
+        )
+        .setOrigin(0.5);
+    }
+
+
     this.tweens.add({
       targets: this.space,
       duration: 300,

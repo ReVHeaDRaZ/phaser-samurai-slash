@@ -42,7 +42,8 @@ export default class Bootloader extends Phaser.Scene {
       this.load.image("chain", "assets/images/chain.png");
       this.load.image("attackButton", "assets/images/attackButton.png");
       this.load.image("moveButton", "assets/images/moveButton.png");
-
+      this.load.image("jumpButton", "assets/images/jumpButton.png");
+      
       this.load.audio("build", "assets/sounds/build.mp3");
       this.load.audio("slash", "assets/sounds/slash.mp3");
       this.load.audio("coin", "assets/sounds/coin.mp3");
@@ -114,6 +115,12 @@ export default class Bootloader extends Phaser.Scene {
       frameHeight: 20,
     });
     
+
+    if (this.sys.game.device.os.desktop)
+      this.registry.set("desktop", 1);
+    else
+      this.registry.set("desktop", 0);
+
     this.registry.set("score", 0);
     this.registry.set("coins", 0);
     this.registry.set("hearts", 2);

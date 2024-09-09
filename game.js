@@ -130,8 +130,13 @@ export default class GameScene extends Phaser.Scene{
       }
 
       if (object.name === "text") {
+        let text = object.text.text;
+        if(!this.registry.get("desktop")){
+          text = text.replace("UP", "JUMP");
+          text = text.replace("SPACE","ATTACK");
+        }
         this.add
-          .bitmapText(object.x, object.y, "pixelFont", object.text.text, 15)
+          .bitmapText(object.x, object.y, "pixelFont", text, 15)
           .setDropShadow(1, 2, 0x222222, 0.9)
           .setOrigin(0);
       }

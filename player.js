@@ -25,7 +25,7 @@ class Player extends Phaser.GameObjects.Sprite {
       radius: 100,
       base: this.scene.add.image(0,0, 'moveButton').setDisplaySize(108, 108).setAlpha(0.01),
       thumb: this.scene.add.image(0, 0, 'moveButton').setDisplaySize(64, 64).setAlpha(0.25),
-      dir: '8dir',
+      dir: 'left&right',
       // forceMin: 16,
       // fixed: true,
       // enable: true
@@ -38,9 +38,21 @@ class Player extends Phaser.GameObjects.Sprite {
         // clickInterval: 100    // ms
         // threshold: undefined
     });
-
+    this.jumpButton = scene.plugins.get('rexButton')
+      .add(this.scene.add.sprite(sizes.width-sizes.controlsOffset*2, sizes.height + sizes.controlsHeight - sizes.controlsOffset,"jumpButton")
+      .setAlpha(0.25).setScrollFactor(0), {
+        // enable: true,
+        mode: 0,              // 0|'press'|1|'release'
+        // clickInterval: 100    // ms
+        // threshold: undefined
+    });
+    this.jumpButtonPressed = false;
+    this.scene.input.addPointer(1);
     this.joystickCursor = this.joystick.createCursorKeys();
     this.attackButton.on('down', () => this.attack());
+    this.jumpButton.on('down', () => this.jumpButtonPressed=true);
+   
+
 
     this.right = true;
     this.body.setSize(20, 30);
@@ -136,7 +148,8 @@ class Player extends Phaser.GameObjects.Sprite {
       this.falling = false;
     }
 
-    if ( (Phaser.Input.Keyboard.JustDown(this.cursor.up) || Phaser.Input.Keyboard.JustDown(this.W) || Phaser.Input.Keyboard.JustDown(this.joystickCursor.up)) && !this.falling && !this.jumping) {
+    if ( (Phaser.Input.Keyboard.JustDown(this.cursor.up) || Phaser.Input.Keyboard.JustDown(this.W) || this.jumpButtonPressed) && !this.falling && !this.jumping) {
+      this.jumpButtonPressed=false;
       this.body.setVelocityY(this.jumpVelocity);
       if (!this.attacking ) this.anims.play("jumpUp", true);
       this.scene.playAudio("jump");
@@ -183,7 +196,7 @@ class Player extends Phaser.GameObjects.Sprite {
   }
 
   attack() {
-    if(!this.attacking){
+    if(!this.attacking && !this.dead){
       if(this.combo==0){
         this.anims.play("attack1", true);
         this.combo++;

@@ -22,7 +22,6 @@ export default class Outro extends Phaser.Scene {
       "",
       "Total Coins",
       "",
-      "Press SPACE",
     ];
 
     if(this.isDead){
@@ -34,9 +33,12 @@ export default class Outro extends Phaser.Scene {
         "",
         "Total Coins",
         "",
-        "Press SPACE",
       ];
     }
+    if(this.registry.get("desktop"))
+      this.text.push("Press SPACE");
+    else
+      this.text.push("TOUCH to Continue");
 
     // Reset score and hearts
     this.registry.set("hearts", 2);
@@ -94,7 +96,7 @@ export default class Outro extends Phaser.Scene {
     this.scoreCoins = this.add
       .bitmapText(
         this.center_width + 32,
-        this.center_height + 95,
+        this.center_height + 55,
         "pixelFont",
         "x" + this.totalCoins,
         30
@@ -103,7 +105,7 @@ export default class Outro extends Phaser.Scene {
       .setOrigin(0.5)
       .setScrollFactor(0);
     this.scoreCoinsLogo = this.add
-      .sprite(this.center_width - 32, this.center_height + 95, "coin")
+      .sprite(this.center_width - 32, this.center_height + 55, "coin")
       .setScale(0.7)
       .setOrigin(0.5)
       .setScrollFactor(0);
