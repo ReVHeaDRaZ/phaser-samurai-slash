@@ -18,9 +18,10 @@ class Player extends Phaser.GameObjects.Sprite {
     this.S = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     this.D = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
+    this.scene.add.rectangle(0, sizes.height, sizes.width, sizes.controlsHeight, 0x181818).setOrigin(0).setScrollFactor(0);
     this.joystick = this.scene.plugins.get('rexVirtualJoystick').add(this.scene, {
-      x: 100,
-      y: sizes.height-100,
+      x: sizes.controlsOffset,
+      y: sizes.height + sizes.controlsHeight - sizes.controlsOffset,
       radius: 100,
       base: this.scene.add.image(0,0, 'moveButton').setDisplaySize(108, 108).setAlpha(0.01),
       thumb: this.scene.add.image(0, 0, 'moveButton').setDisplaySize(64, 64).setAlpha(0.25),
@@ -29,11 +30,17 @@ class Player extends Phaser.GameObjects.Sprite {
       // fixed: true,
       // enable: true
     });
+    this.attackButton = scene.plugins.get('rexButton')
+      .add(this.scene.add.sprite(sizes.width-sizes.controlsOffset, sizes.height + sizes.controlsHeight - sizes.controlsOffset,"attackButton")
+      .setAlpha(0.25).setScrollFactor(0), {
+        // enable: true,
+        mode: 0,              // 0|'press'|1|'release'
+        // clickInterval: 100    // ms
+        // threshold: undefined
+    });
+
     this.joystickCursor = this.joystick.createCursorKeys();
-    const attackButton = this.scene.add.sprite(sizes.width-100,sizes.height-100,"attackButton").setScrollFactor(0).setAlpha(0.25);
-    attackButton.setInteractive().on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN,() => this.attack());
-    
-    
+    this.attackButton.on('down', () => this.attack());
 
     this.right = true;
     this.body.setSize(20, 30);
@@ -51,10 +58,9 @@ class Player extends Phaser.GameObjects.Sprite {
     this.hurt = false;
     this.hurtTween = null;
     this.dead = false;
-    this.combo = 0;
-    
+    this.combo = 0; 
   }
-  test(){console.log("FUCK")}
+
   init() {
     this.scene.anims.create({
       key: "idle",
@@ -129,7 +135,6 @@ class Player extends Phaser.GameObjects.Sprite {
       this.jumping = false;
       this.falling = false;
     }
-
 
     if ( (Phaser.Input.Keyboard.JustDown(this.cursor.up) || Phaser.Input.Keyboard.JustDown(this.W) || Phaser.Input.Keyboard.JustDown(this.joystickCursor.up)) && !this.falling && !this.jumping) {
       this.body.setVelocityY(this.jumpVelocity);

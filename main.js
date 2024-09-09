@@ -7,11 +7,12 @@ import Transition from './transition';
 import GameScene from './game';
 import { sizes } from './sizes';
 import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin.js';
+import ButtonPlugin from 'phaser3-rex-plugins/plugins/button-plugin.js';
 
 const config = {
   type: Phaser.WEBGL,
   width: sizes.width,
-  height: sizes.height,
+  height: sizes.height + sizes.controlsHeight,
   scale: {
     mode: Phaser.Scale.FIT,
     // autoCenter: Phaser.Scale.CENTER_BOTH,
@@ -29,6 +30,11 @@ const config = {
         key: 'rexVirtualJoystick',
         plugin: VirtualJoystickPlugin,
         start: true
+    },
+    {
+      key: 'rexButton',
+      plugin: ButtonPlugin,
+      start: true
     },
     ]
   },
