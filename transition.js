@@ -22,7 +22,7 @@ export default class Transition extends Phaser.Scene {
 
     if (this.registry.get("hearts") <= 0)
       this.loadOutro(true);
-    else if (this.number === 5)
+    else if (this.number === 3)
       this.loadOutro();
     else{
       this.addScore();
