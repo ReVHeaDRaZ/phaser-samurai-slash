@@ -31,7 +31,7 @@ class Player extends Phaser.GameObjects.Sprite {
       // enable: true
     });
     this.attackButton = scene.plugins.get('rexButton')
-      .add(this.scene.add.sprite(sizes.width-sizes.controlsOffset, sizes.height + sizes.controlsHeight - sizes.controlsOffset,"attackButton")
+      .add(this.scene.add.sprite(sizes.width-sizes.controlsOffset*0.75, sizes.height + sizes.controlsHeight - sizes.controlsOffset,"attackButton")
       .setAlpha(0.25).setScrollFactor(0), {
         // enable: true,
         mode: 0,              // 0|'press'|1|'release'
