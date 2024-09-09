@@ -76,10 +76,10 @@
                 3
             ],
             "scale": 1.5,
-            "selectedLayer": 2,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 2869.333333333333,
-                "y": 349
+                "x": 202.66666666666666,
+                "y": 271
             }
         },
         "scene2.tmx#background": {
