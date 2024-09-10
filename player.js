@@ -128,12 +128,12 @@ class Player extends Phaser.GameObjects.Sprite {
     this.anims.play("idle", true);
     this.on("animationcomplete", this.animationComplete, this);
 
-    //this.light = this.scene.lights.addLight(this.x, this.y, 150,0xffffff,0.5);
+    this.light = this.scene.lights.addLight(this.x, this.y, 350,0xffffff,0.35);
   }
 
   update() {
-    //this.light.x = this.x;
-    //this.light.y = this.y;
+    this.light.x = this.x;
+    this.light.y = this.y;
     if (this.dead) return;
     
     if (this.body.velocity.y > 150) {
