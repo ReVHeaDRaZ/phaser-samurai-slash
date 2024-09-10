@@ -70,7 +70,9 @@ class Player extends Phaser.GameObjects.Sprite {
     this.hurt = false;
     this.hurtTween = null;
     this.dead = false;
-    this.combo = 0; 
+    this.combo = 0;
+
+    this.setPipeline('Light2D');
   }
 
   init() {
@@ -125,9 +127,13 @@ class Player extends Phaser.GameObjects.Sprite {
 
     this.anims.play("idle", true);
     this.on("animationcomplete", this.animationComplete, this);
+
+    //this.light = this.scene.lights.addLight(this.x, this.y, 150,0xffffff,0.5);
   }
 
   update() {
+    //this.light.x = this.x;
+    //this.light.y = this.y;
     if (this.dead) return;
     
     if (this.body.velocity.y > 150) {
@@ -179,7 +185,6 @@ class Player extends Phaser.GameObjects.Sprite {
     }
     if (Phaser.Input.Keyboard.JustDown(this.spaceBar)) this.attack();
     if(this.blow){
-      console.log(this.blow);
       this.blow.y = this.y;
     }
   }

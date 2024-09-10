@@ -26,9 +26,8 @@ export default class Platform extends Phaser.GameObjects.Container {
       "platform" + size
     ).setOrigin(0).setScale(0.5);
     this.add(this.platform);
-
+    this.platform.setPipeline('Light2D');
     this.init();
-    console.log("Platform spawned with size:" + size + " type:" + this.type);
   }
 
   /*

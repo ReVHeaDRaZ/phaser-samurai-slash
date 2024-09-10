@@ -41,11 +41,11 @@
             "expandedObjectLayers": [
                 3
             ],
-            "scale": 1,
+            "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 391,
-                "y": 329.5
+                "x": 1100.6666666666665,
+                "y": 377.66666666666663
             }
         },
         "scene0.tmx#background": {
@@ -61,7 +61,7 @@
             "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1637.3333333333333,
+                "x": 2096,
                 "y": 335
             }
         },

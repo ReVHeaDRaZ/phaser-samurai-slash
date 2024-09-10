@@ -15,7 +15,7 @@ class Coin extends Phaser.GameObjects.Sprite {
   }
 
   /*
-    Inits the animation and it adds a little tween effect to make the coin move up and down.
+    Inits the animation and it adds a little tween effect to make the coin move up and down. Also adds light
     */
   init() {
     this.scene.anims.create({
@@ -36,6 +36,8 @@ class Coin extends Phaser.GameObjects.Sprite {
       repeat: -1,
       yoyo: true,
     });
+
+    this.light = this.scene.lights.addLight(this.x, this.y, 150,0xffd557,0.25);
   }
 
   /*
@@ -49,12 +51,14 @@ class Coin extends Phaser.GameObjects.Sprite {
 
     this.disabled = true;
     this.scene.tweens.add({
-      targets: this,
+      targets: [this,this.light],
       duration: 300,
       x: { from: this.x, to: x },
       y: { from: this.y, to: y },
+      
       scale: { from: 0.7, to: 0.5 },
       onComplete: () => {
+        this.scene.lights.removeLight(this.light);
         this.destroy();
       },
     });

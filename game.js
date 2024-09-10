@@ -59,14 +59,14 @@ export default class GameScene extends Phaser.Scene{
 
   createParallaxBackground(){
     this.backgrounds = [];
-    this.add.tileSprite(0, 0, sizes.width, sizes.height, "bg1").setOrigin(0).setScale(3).setScrollFactor(0,0);
+    this.add.tileSprite(0, 0, sizes.width, sizes.height, "bg1").setOrigin(0).setScale(3).setScrollFactor(0,0).setTint(0x333333);
     this.backgrounds.push({
       ratioX: 0.1,
-      sprite: this.add.tileSprite(0, 0, sizes.width, sizes.height, "bg2").setOrigin(0).setScale(3).setScrollFactor(0,0)
+      sprite: this.add.tileSprite(0, 0, sizes.width, sizes.height, "bg2").setOrigin(0).setScale(3).setScrollFactor(0,0).setTint(0x444444)
     })
     this.backgrounds.push({
       ratioX: 0.2,
-      sprite: this.add.tileSprite(0, 0, sizes.width, sizes.height, "bg3").setOrigin(0).setScale(3).setScrollFactor(0,0)
+      sprite: this.add.tileSprite(0, 0, sizes.width, sizes.height, "bg3").setOrigin(0).setScale(3).setScrollFactor(0,0).setTint(0x777777)
     })
     
   }
@@ -79,13 +79,10 @@ export default class GameScene extends Phaser.Scene{
     });
 
    this.tileSetBg = this.tileMap.addTilesetImage("background");
-    this.tileMap.createLayer("background", this.tileSetBg);
+    this.tileMap.createLayer("background", this.tileSetBg).setPipeline("Light2D");
 
     this.tileSet = this.tileMap.addTilesetImage("oak_woods");
-    this.platform = this.tileMap.createLayer(
-      "tileLayer" + this.number,
-      this.tileSet
-    );
+    this.platform = this.tileMap.createLayer("tileLayer" + this.number, this.tileSet).setPipeline("Light2D");
     this.platform.setCollisionByExclusion([-1]); 
     this.objectsLayer = this.tileMap.getObjectLayer("objects");
 
@@ -101,6 +98,8 @@ export default class GameScene extends Phaser.Scene{
 
     this.addsObjects();
     this.addColliders();
+
+    this.lights.enable().setAmbientColor(0x888888);    
   }
 
   /*
@@ -131,9 +130,11 @@ export default class GameScene extends Phaser.Scene{
           new Platform(this, object.x, object.y, +object.properties[1].value, +object.properties[0].value)
         );
       }
-
       if (object.name === "turn") {
         this.turnGroup.add(new Turn(this, object.x, object.y, object.width, object.height));
+      }
+      if (object.name === "lamp") {
+        this.lights.addLight(object.x, object.y, 300,0xfce190,0.95);
       }
 
       if (object.name === "text") {
