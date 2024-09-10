@@ -1,3 +1,4 @@
+import { sizes } from "./sizes";
 export default class Transition extends Phaser.Scene {
   constructor() {
     super({ key: "transition" });
@@ -18,7 +19,8 @@ export default class Transition extends Phaser.Scene {
     this.height = this.sys.game.config.height;
     this.center_width = this.width / 2;
     this.center_height = this.height / 2;
-    this.cameras.main.setBackgroundColor(0x62a2bf); //(0x00b140)//(0x62a2bf)
+    this.cameras.main.setBackgroundColor(0x181818); //(0x00b140)//(0x62a2bf)
+    this.add.tileSprite(0, 0, sizes.width, sizes.height+sizes.controlsHeight, "bg1").setOrigin(0).setScale(4).setScrollFactor(0,0).setTint(0x333333);
 
     if (this.registry.get("hearts") <= 0)
       this.loadOutro(true);
