@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import Blow from './blow';
+import Dagger from './dagger';
 import { JumpSmoke } from "./particle";
 import { sizes } from './sizes';
 
@@ -71,6 +72,7 @@ class Player extends Phaser.GameObjects.Sprite {
     this.hurtTween = null;
     this.dead = false;
     this.combo = 0;
+    this.weapon = null;
 
     this.setPipeline('Light2D');
   }
@@ -220,6 +222,11 @@ class Player extends Phaser.GameObjects.Sprite {
       const size = 42;
       this.blow = new Blow(this.scene, this.x + offsetX, this.y, size, size);
       this.scene.blows.add(this.blow);
+      if(this.weapon=="dagger"){
+        this.dagger = new Dagger(this.scene, this.x + offsetX, this.y, this.right ? "right":"left");
+        this.scene.daggers.add(this.dagger);
+      }
+
       this.scene.playAudio("slash");
     }
   }

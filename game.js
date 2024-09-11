@@ -8,6 +8,7 @@ import { sizes } from './sizes';
 import Heart from "./heart";
 import Platform from "./platform";
 import Chest from "./chest";
+import Dagger from "./dagger";
 
 export default class GameScene extends Phaser.Scene{
   constructor(){
@@ -95,6 +96,7 @@ export default class GameScene extends Phaser.Scene{
     this.coins = this.add.group();
     this.hearts = this.add.group();
     this.blows = this.add.group();
+    this.daggers = this.add.group();
     this.platformGroup = this.add.group();
     this.chests = this.add.group();
 
@@ -102,10 +104,12 @@ export default class GameScene extends Phaser.Scene{
     this.addColliders();
 
     this.lights.enable().setAmbientColor(0x888888);
+    // this.chest = new Chest(this,300,450); // FOR TESTING
+    // this.chests.add(this.chest);
   }
 
   /*
-    This function adds the objects defined on the objects layer of the tilemap to the game. Yeah, I know, I could have used a switch statement here, but lately, I'm trying to avoid them as much as I can.
+    This function adds the objects defined on the objects layer of the tilemap to the game.
   */
   addsObjects() {
     this.objectsLayer.objects.forEach((object) => {
@@ -204,6 +208,15 @@ export default class GameScene extends Phaser.Scene{
     this.physics.add.collider(
       this.batGroup,
       this.platform,
+      this.turnFoe,
+      () => {
+        return true;
+      },
+      this
+    );
+    this.physics.add.collider(
+      this.batGroup,
+      this.platformGroup,
       this.turnFoe,
       () => {
         return true;
@@ -312,10 +325,48 @@ export default class GameScene extends Phaser.Scene{
         },
         this
       );
+      this.physics.add.overlap(
+        this.daggers,
+        this.zombieGroup,
+        this.hitDagger,
+        () => {
+          return true;
+        },
+        this
+      );
+
+      this.physics.add.overlap(
+        this.daggers,
+        this.batGroup,
+        this.hitDagger,
+        () => {
+          return true;
+        },
+        this
+      );
+      this.physics.add.collider(
+        this.daggers,
+        this.platform,
+        this.hitDagger,
+        () => {
+          return true;
+        },
+        this
+      );
+      this.physics.add.collider(
+        this.daggers,
+        this.platformGroup,
+        this.hitDagger,
+        () => {
+          return true;
+        },
+        this
+      );
+
     }
 
   /*
-    This function is called when the player picks a coin. It disables the coin (to avoid picking it up again while it animates), plays the sound, and updates the score. Same with the lunchbox.
+    This function is called when the player picks a coin. It disables the coin (to avoid picking it up again while it animates), plays the sound, and updates the score. Same with the hearts.
     */
   pickCoin(player, coin) {
     if (!coin.disabled) {
@@ -366,7 +417,7 @@ export default class GameScene extends Phaser.Scene{
   }
 
   /*
-    This function is called when the player hits a foe. If the player is invincible (because of a power-up), do nothing. If not, then the player is hit.
+    This function is called when the player is hit by a foe. If the player is invincible (because of a power-up), do nothing. If not, then the player is hit.
   */
   hitPlayer(player, foe) {
     foe.turn();
@@ -384,7 +435,7 @@ export default class GameScene extends Phaser.Scene{
     hitChest(player, chest) {
       if (!chest.disabled) {
         this.playAudio("swordClash");
-        chest.pick();
+        chest.hit();
       }
     }
   
@@ -401,6 +452,16 @@ export default class GameScene extends Phaser.Scene{
     foe.death();
     this.spawnCoin(blow.x,blow.y);
   }
+
+  /*
+    This is called when the daggers hits an object.
+  */
+    hitDagger(dagger, hit) {
+      if(hit.name=="bat" || hit.name=="zombie"){
+        hit.death();
+      }
+      dagger.hit();
+    }
 
   /*
     This function is called when a foe touches a turn object. It turns the foe.
