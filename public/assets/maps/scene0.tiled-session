@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "scene2.tmx",
+    "activeFile": "scene1.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -41,11 +41,11 @@
             "expandedObjectLayers": [
                 3
             ],
-            "scale": 1.5,
+            "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1100.6666666666665,
-                "y": 377.66666666666663
+                "x": 1326,
+                "y": 187.5
             }
         },
         "scene0.tmx#background": {
@@ -58,11 +58,11 @@
             "expandedObjectLayers": [
                 3
             ],
-            "scale": 1.5,
+            "scale": 5.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 2096,
-                "y": 335
+                "x": 1625.6363636363635,
+                "y": 346.8181818181818
             }
         },
         "scene1.tmx#background": {
@@ -78,7 +78,7 @@
             "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": -266.6666666666667,
+                "x": 182.66666666666666,
                 "y": 271
             }
         },
@@ -101,8 +101,8 @@
     "project": "scene0.tiled-project",
     "recentFiles": [
         "scene0.tmx",
-        "scene1.tmx",
         "scene2.tmx",
+        "scene1.tmx",
         "C:/Users/Ryan/HtmlProjects/phaser/wallhammer/public/assets/maps/scene0.json",
         "landscape.tsx",
         "grass.tsx"

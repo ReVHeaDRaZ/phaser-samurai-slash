@@ -60,7 +60,7 @@ class Chest extends Phaser.GameObjects.Sprite {
       1000,
       () => {
         this.destroy();
-        this.prizeSprite.destroy();
+        if(this.prizeSprite) this.prizeSprite.destroy();
       },
       null,
       this
@@ -73,19 +73,35 @@ class Chest extends Phaser.GameObjects.Sprite {
   showPrize() {
     const prize = ["dagger", "coin", "heart"];
     const selectedPrize = Phaser.Math.RND.pick(prize);
-    console.log(selectedPrize);
-    // this.scene.player.applyPrize(selectedPrize);
+    this.scene.player.applyPrize(selectedPrize);
     let scale = selectedPrize=="coin" ? 0.35 : selectedPrize=="heart" ? 1 : 1
-    this.prizeSprite = this.scene.add
-      .sprite(this.x-60, this.y-40, selectedPrize)
-      .setOrigin(0)
-      .setScale(scale);
-    this.scene.tweens.add({
-      targets: this.prizeSprite,
-      duration: 500,
-      y: { from: this.y-40, to: this.y - 70 },
-      scale: {from: this.prizeSprite.scale, to: this.prizeSprite.scale *1.5}
-    });
+    
+    if(selectedPrize=="coin"){
+      this.scene.add.particles(this.x-60,this.y-10,'coin', {
+        alpha: { start: 1, end: 0 },
+        scale: {start:0.05, end: 0.25},
+        speedY: {random: [-200,-350]},
+        speedX: {random: [-50, 50] },
+        rotate: { min: -180, max: 180 },
+        lifespan: { min: 500, max: 1000 },
+        frequency: 10,
+        duration: 200,
+        gravityY: 700,
+        bounds: {x:this.x-150, y:this.y-50, width: 100, height: 64},
+        collideBotton: true
+      });
+    }else{
+      this.prizeSprite = this.scene.add
+        .sprite(this.x-60, this.y-40, selectedPrize)
+        .setOrigin(0)
+        .setScale(scale);
+      this.scene.tweens.add({
+        targets: this.prizeSprite,
+        duration: 500,
+        y: { from: this.y-40, to: this.y - 70 },
+        scale: {from: this.prizeSprite.scale, to: this.prizeSprite.scale *1.5}
+      });
+    }
   }
 
   // Used to call the showPrize method after animation completes

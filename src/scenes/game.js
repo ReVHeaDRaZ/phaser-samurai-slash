@@ -104,7 +104,8 @@ export default class GameScene extends Phaser.Scene{
     this.addColliders();
 
     this.lights.enable().setAmbientColor(0x888888);
-    // this.chest = new Chest(this,300,450); // FOR TESTING
+    
+    // this.chest = new Chest(this,300,460); // FOR TESTING
     // this.chests.add(this.chest);
   }
 
@@ -457,9 +458,11 @@ export default class GameScene extends Phaser.Scene{
     This is called when the daggers hits an object.
   */
     hitDagger(dagger, hit) {
-      if(hit.name=="bat" || hit.name=="zombie"){
-        hit.death();
-      }
+      if(hit.name=="bat")
+        this.hitBat(dagger, hit);
+      if(hit.name=="zombie")
+        this.hitZombie(dagger,hit);
+
       dagger.hit();
     }
 

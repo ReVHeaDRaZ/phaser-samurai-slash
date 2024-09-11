@@ -56,7 +56,7 @@ class Coin extends Phaser.GameObjects.Sprite {
       x: { from: this.x, to: x },
       y: { from: this.y, to: y },
       
-      scale: { from: 0.7, to: 0.5 },
+      scale: { from: this.scale*1.4, to: this.scale },
       onComplete: () => {
         this.scene.lights.removeLight(this.light);
         this.destroy();

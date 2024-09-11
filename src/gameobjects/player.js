@@ -3,6 +3,7 @@ import Blow from './blow';
 import Dagger from './dagger';
 import { JumpSmoke } from "./particle";
 import { sizes } from '../sizes';
+import Coin from './coin';
 
 class Player extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, health = 2) {
@@ -81,6 +82,7 @@ class Player extends Phaser.GameObjects.Sprite {
   }
 
   init() {
+    //Animations
     this.scene.anims.create({
       key: "idle",
       frames: this.scene.anims.generateFrameNumbers('player', {start:0, end:7}),
@@ -133,6 +135,7 @@ class Player extends Phaser.GameObjects.Sprite {
     this.anims.play("idle", true);
     this.on("animationcomplete", this.animationComplete, this);
 
+    // Add a light to follow player on update
     this.light = this.scene.lights.addLight(this.x, this.y, 350,0xffffff,0.35);
   }
 
@@ -225,6 +228,7 @@ class Player extends Phaser.GameObjects.Sprite {
       const size = 42;
       this.blow = new Blow(this.scene, this.x + offsetX, this.y, size, size);
       this.scene.blows.add(this.blow);
+      //Weapon attacks
       if(this.weapon=="dagger"){
         this.dagger = new Dagger(this.scene, this.x + offsetX, this.y, this.right ? "right":"left");
         this.scene.daggers.add(this.dagger);
@@ -267,7 +271,7 @@ class Player extends Phaser.GameObjects.Sprite {
       this.die();
     }else{
       this.body.setVelocityY(-200);
-      this.flashPlayer();
+      this.invincibleFlashPlayer(1);
     }
   }
 
@@ -287,22 +291,63 @@ class Player extends Phaser.GameObjects.Sprite {
     this.health = 2;
   }
 
-  setCanAttack(){
-    console.log(this);
-    this.attacking = false;
-  }
   /*
-    When called it flashes the player while invincible, then set invincible to false after 1 sec.
+    When called it flashes the players alpha while invincible, then sets invincible back to false after the amount of (seconds).
     */
-    flashPlayer() {
+    invincibleFlashPlayer(seconds) {
       this.scene.tweens.add({
         targets: this,
         duration: 100,
         alpha: { from: 0.5, to: 1 },
-        repeat: 10,
-        onComplete: () => {this.invincible=false}
+        repeat: 10*seconds,
+        onComplete: () => { this.invincible=false }
       });
     }
+
+    /*
+    This is called when the player gets a prize. It checks the prize and calls the corresponding method.
+    */
+  applyPrize(prize) {
+    switch (prize) {
+      // case "speed":
+      //   this.walkVelocity = 330;
+      //   this.flashPlayer();
+      //   break;
+      // case "boots":
+      //   this.jumpVelocity = -600;
+      //   this.flashPlayer();
+      //   break;
+      // case "star":
+      //   this.invincible = true;
+      //   this.scene.tweens.add({
+      //     targets: this,
+      //     duration: 300,
+      //     alpha: { from: 0.7, to: 1 },
+      //     repeat: -1,
+      //   });
+      //   break;
+      case "dagger":
+        this.weapon = "dagger";
+        break;
+      case "heart":
+        this.hurt = false;
+        this.scene.updateHearts(1);
+        break;
+      case "coin":
+        const amountOfCoins = 10;
+        for(let i=0; i < amountOfCoins; i++){
+          this.scene.time.delayedCall(50 * i + 500,()=>{
+            this.scene.playAudio("coin");
+            let coin = new Coin(this.scene,this.x,this.y).setScale(0.3);
+            this.scene.coins.add(coin);
+            
+          })
+        }
+        break;
+      default:
+        break;
+    }
+  }
 
 }
 
