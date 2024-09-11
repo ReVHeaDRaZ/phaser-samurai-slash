@@ -1,10 +1,10 @@
-import './style.css';
+import '../style.css';
 import Phaser from 'phaser';
-import Bootloader from './bootloader';
-import Splash from './splash';
-import Outro from './outro';
-import Transition from './transition';
-import GameScene from './game';
+import Bootloader from './scenes/bootloader';
+import Splash from './scenes/splash';
+import Outro from './scenes/outro';
+import Transition from './scenes/transition';
+import GameScene from './scenes/game';
 import { sizes } from './sizes';
 import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin.js';
 import ButtonPlugin from 'phaser3-rex-plugins/plugins/button-plugin.js';

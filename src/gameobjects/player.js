@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 import Blow from './blow';
 import Dagger from './dagger';
 import { JumpSmoke } from "./particle";
-import { sizes } from './sizes';
+import { sizes } from '../sizes';
 
 class Player extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, health = 2) {

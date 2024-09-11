@@ -1,14 +1,14 @@
 import Phaser from "phaser";
-import Player from '/player';
-import Coin from "./coin";
-import Turn from "./turn";
-import Zombie from "./zombie";
-import Bat from "./bat";
-import { sizes } from './sizes';
-import Heart from "./heart";
-import Platform from "./platform";
-import Chest from "./chest";
-import Dagger from "./dagger";
+import Player from '../gameobjects/player';
+import Coin from "../gameobjects/coin";
+import Turn from "../gameobjects/turn";
+import Zombie from "../gameobjects/zombie";
+import Bat from "../gameobjects/bat";
+import { sizes } from '../sizes';
+import Heart from "../gameobjects/heart";
+import Platform from "../gameobjects/platform";
+import Chest from "../gameobjects/chest";
+import Dagger from "../gameobjects/dagger";
 
 export default class GameScene extends Phaser.Scene{
   constructor(){

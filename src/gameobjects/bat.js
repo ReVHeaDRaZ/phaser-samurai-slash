@@ -1,4 +1,4 @@
-import { sizes } from "./sizes";
+import { sizes } from "../sizes";
 
 export default class Bat extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, type = "right") {

@@ -1,4 +1,4 @@
-import { sizes } from "./sizes";
+import { sizes } from "../sizes";
 export default class Transition extends Phaser.Scene {
   constructor() {
     super({ key: "transition" });
