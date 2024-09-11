@@ -19,7 +19,7 @@ export default class Splash extends Phaser.Scene {
     this.input.on('pointerdown', () => this.startGame(), this);
     this.showTitle();
     this.playMusic();
-    this.playAudioRandomly("stone");
+    //this.playAudioRandomly("stone");
   }
 
   startGame() {
@@ -36,7 +36,10 @@ export default class Splash extends Phaser.Scene {
     Helper function to show the title letter by letter
     */
   showTitle() {
-    "SAMURAI".split("").forEach((letter, i) => {
+    this.playAudioRandomly("slash");
+    
+    let lineOne = "SAMURAI".split("");
+    lineOne.forEach((letter, i) => {
       if(i==1){
         this.slashMark = this.add.ellipse(30,70,450,10,0xffffff).setOrigin(0).setDepth(1);
         this.tweens.add({
@@ -48,11 +51,16 @@ export default class Splash extends Phaser.Scene {
           onComplete: ()=>{this.slashMark.destroy()}
         })
       }
+
+      if(i==2)
+        this.playAudioRandomly("swordClash");
+      if(i==lineOne.length-1)
+        this.playAudioRandomly("stone");
+
       this.time.delayedCall(
         50 * (i + 1),
         () => {
-          this.playAudioRandomly("slash");
-          if (Phaser.Math.Between(0, 5) > 2) this.playAudioRandomly("stone");
+          //if (Phaser.Math.Between(0, 5) > 2) this.playAudioRandomly("stone");
           let text = this.add
             .bitmapText(70 * (i + 1) - 30, 70, "hammerfont", letter, 60)
             .setTint(0xca6702)
@@ -67,11 +75,13 @@ export default class Splash extends Phaser.Scene {
       );
     });
 
-    "SLASHER".split("").forEach((letter, i) => {
+    let lineTwo = "SLASHER".split("");
+    lineTwo.forEach((letter, i) => {
       this.time.delayedCall(
         50 * (i + 1) + 800,
         () => {
           if(i==1){
+            this.playAudioRandomly("slash");
             this.slashMark = this.add.ellipse(30,170,450,10,0xffffff).setOrigin(0).setDepth(1);
             this.tweens.add({
               targets: this.slashMark,
@@ -82,8 +92,12 @@ export default class Splash extends Phaser.Scene {
               onComplete: ()=>{this.slashMark.destroy()}
             })
           }
-          this.playAudioRandomly("slash");
-          if (Phaser.Math.Between(0, 5) > 2) this.playAudioRandomly("stone");
+          
+          if(i==2)
+            this.playAudioRandomly("swordClash");
+          if(i==lineTwo.length-1)
+            this.playAudioRandomly("stone");
+          
           let text = this.add
             .bitmapText(70 * (i + 1) - 30, 170, "hammerfont", letter, 60)
             .setTint(0xca6702)
@@ -104,8 +118,8 @@ export default class Splash extends Phaser.Scene {
     Helper function to play audio randomly to add variety.
     */
   playAudioRandomly(key) {
-    const volume = Phaser.Math.Between(0.8, 1);
-    const rate = 1;
+    const volume = Phaser.Math.Between(0.9, 1);
+    const rate = Phaser.Math.Between(0.9, 1);
     this.sound.add(key).play({ volume, rate });
   }
 
