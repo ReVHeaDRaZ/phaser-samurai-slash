@@ -51,7 +51,10 @@ class Player extends Phaser.GameObjects.Sprite {
     this.scene.input.addPointer(1);
     this.joystickCursor = this.joystick.createCursorKeys();
     this.attackButton.on('down', () => this.attack());
-    this.jumpButton.on('down', () => this.jumpButtonPressed=true);
+    this.jumpButton.on('down', () => {
+      if(!this.jumping && !this.falling)
+        this.jumpButtonPressed=true
+    });
     this.jumpButton.on('up', () => this.jumpButtonPressed=false);
 
 
