@@ -19,7 +19,6 @@ export default class Splash extends Phaser.Scene {
     this.input.on('pointerdown', () => this.startGame(), this);
     this.showTitle();
     this.playMusic();
-    //this.playAudioRandomly("stone");
   }
 
   startGame() {

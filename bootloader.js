@@ -118,6 +118,10 @@ export default class Bootloader extends Phaser.Scene {
       frameWidth: 16,
       frameHeight: 16,
     });
+    this.load.spritesheet("chest", "assets/images/chest.png", {
+      frameWidth: 48,
+      frameHeight: 32,
+    });
     
 
     if (this.sys.game.device.os.desktop)

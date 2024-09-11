@@ -282,7 +282,7 @@ class Player extends Phaser.GameObjects.Sprite {
     this.attacking = false;
   }
   /*
-    When called it flashes the player while invincible, then set invisible to false after 1 sec.
+    When called it flashes the player while invincible, then set invincible to false after 1 sec.
     */
     flashPlayer() {
       this.scene.tweens.add({

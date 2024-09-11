@@ -43,7 +43,7 @@ export default class Bat extends Phaser.Physics.Arcade.Sprite {
         start: 5,
         end: 7,
       }),
-      frameRate: 5,
+      frameRate: 10,
     });
 
     this.anims.play(this.name, true);

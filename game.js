@@ -7,6 +7,7 @@ import Bat from "./bat";
 import { sizes } from './sizes';
 import Heart from "./heart";
 import Platform from "./platform";
+import Chest from "./chest";
 
 export default class GameScene extends Phaser.Scene{
   constructor(){
@@ -95,11 +96,12 @@ export default class GameScene extends Phaser.Scene{
     this.hearts = this.add.group();
     this.blows = this.add.group();
     this.platformGroup = this.add.group();
+    this.chests = this.add.group();
 
     this.addsObjects();
     this.addColliders();
 
-    this.lights.enable().setAmbientColor(0x888888);    
+    this.lights.enable().setAmbientColor(0x888888);
   }
 
   /*
@@ -124,6 +126,9 @@ export default class GameScene extends Phaser.Scene{
       if (object.name === "heart") {
         let heart = new Heart(this, object.x, object.y);
         this.hearts.add(heart);
+      }
+      if (object.name === "chest") {
+        this.chests.add(new Chest(this, object.x, object.y));
       }
       if (object.name === "platform") {
         this.platformGroup.add(
@@ -278,7 +283,16 @@ export default class GameScene extends Phaser.Scene{
         },
         this
       );
-      
+      this.physics.add.overlap(
+        this.blows,
+        this.chests,
+        this.hitChest,
+        () => {
+          return true;
+        },
+        this
+      );
+
       this.physics.add.collider(
         this.player,
         this.zombieGroup,
@@ -328,7 +342,7 @@ export default class GameScene extends Phaser.Scene{
         this.scoreHeartsLogo.x,
         this.scoreHeartsLogo.y
       );
-      this.playAudio("coin");
+      this.playAudio("lunchbox");
       if(!this.player.hurt){
         heart.pick(x,y);
         this.updateHearts(1);
@@ -363,6 +377,16 @@ export default class GameScene extends Phaser.Scene{
       }
     }
   }
+
+  /*
+    This function is called when the player hits a chest.
+  */
+    hitChest(player, chest) {
+      if (!chest.disabled) {
+        this.playAudio("swordClash");
+        chest.pick();
+      }
+    }
   
   /*
     This is called when the player hit a foe. On the screen, the player generates a blow object and when this collides with a foe, the enemy is destroyed. It plays the sound and kills the foe.
@@ -397,9 +421,9 @@ export default class GameScene extends Phaser.Scene{
       land: this.sound.add("land"),
       lunchbox: this.sound.add("lunchbox"),
       prize: this.sound.add("prize"),
-      stone_fail: this.sound.add("stone_fail"),
       stone: this.sound.add("stone"),
       stage: this.sound.add("stage"),
+      swordClash: this.sound.add("swordClash")
     };
   }
   playAudio(key) {
