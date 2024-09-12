@@ -123,9 +123,13 @@ export default class Bootloader extends Phaser.Scene {
       frameWidth: 96,
       frameHeight: 64,
     });
-    this.load.spritesheet("fireworm", "assets/images/fireworm_idle.png", {
+    this.load.spritesheet("fireworm", "assets/images/fireworm_64x90.png", {
       frameWidth: 90,
-      frameHeight: 90,
+      frameHeight: 64,
+    });
+    this.load.spritesheet("fireball", "assets/images/fireball.png", {
+      frameWidth: 46,
+      frameHeight: 46,
     });
     
 

@@ -18,15 +18,17 @@ class Coin extends Phaser.GameObjects.Sprite {
     Inits the animation and it adds a little tween effect to make the coin move up and down. Also adds light
     */
   init() {
-    this.scene.anims.create({
-      key: this.name,
-      frames: this.scene.anims.generateFrameNumbers(this.name, {
-        start: 0,
-        end: 7,
-      }),
-      frameRate: 10,
-      repeat: -1,
-    });
+    if(!this.scene.anims.exists(this.name)){
+      this.scene.anims.create({
+        key: this.name,
+        frames: this.scene.anims.generateFrameNumbers(this.name, {
+          start: 0,
+          end: 7,
+        }),
+        frameRate: 10,
+        repeat: -1,
+      });
+    }
 
     this.anims.play(this.name, true);
     this.scene.tweens.add({

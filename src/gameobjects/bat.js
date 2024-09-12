@@ -27,25 +27,27 @@ export default class Bat extends Phaser.Physics.Arcade.Sprite {
     Inits the animations for the bat and starts the movement. We also add a listener for the `animationcomplete` event.
     */
   init() {
-    this.scene.anims.create({
-      key: this.name,
-      frames: this.scene.anims.generateFrameNumbers(this.name, {
-        start: 0,
-        end: 4,
-      }),
-      frameRate: 10,
-      repeat: -1,
-    });
+    if(!this.scene.anims.exists(this.name)){
+      this.scene.anims.create({
+        key: this.name,
+        frames: this.scene.anims.generateFrameNumbers(this.name, {
+          start: 0,
+          end: 4,
+        }),
+        frameRate: 10,
+        repeat: -1,
+      });
 
-    this.scene.anims.create({
-      key: this.name + "death",
-      frames: this.scene.anims.generateFrameNumbers(this.name, {
-        start: 5,
-        end: 7,
-      }),
-      frameRate: 10,
-    });
-
+      this.scene.anims.create({
+        key: this.name + "death",
+        frames: this.scene.anims.generateFrameNumbers(this.name, {
+          start: 5,
+          end: 7,
+        }),
+        frameRate: 10,
+      });
+    }
+    
     this.anims.play(this.name, true);
     this.body.setVelocityX(this.direction * 150);
     this.flipX = this.direction > 0;

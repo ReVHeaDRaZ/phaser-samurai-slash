@@ -9,6 +9,7 @@ import Heart from "../gameobjects/heart";
 import Platform from "../gameobjects/platform";
 import Chest from "../gameobjects/chest";
 import Dagger from "../gameobjects/dagger";
+import Fireworm from "../gameobjects/fireworm";
 
 export default class GameScene extends Phaser.Scene{
   constructor(){
@@ -90,6 +91,9 @@ export default class GameScene extends Phaser.Scene{
 
     this.zombieGroup = this.add.group();
     this.batGroup = this.add.group();
+    this.firewormGroup = this.add.group();
+    this.firewormGroup.runChildUpdate = true;
+    this.fireballs = this.add.group();
     this.foesGroup = this.add.group();
     this.turnGroup = this.add.group();
     this.exitGroup = this.add.group();
@@ -105,9 +109,8 @@ export default class GameScene extends Phaser.Scene{
 
     this.lights.enable().setAmbientColor(0x888888);
     
-    this.fireworm = this.add.sprite(300,440,"fireworm");
-    //this.chest = new Chest(this,300,460); // FOR TESTING
-    // this.chests.add(this.chest);
+    this.fireworm = new Fireworm(this,280,400);
+    this.firewormGroup.add(this.fireworm);
   }
 
   /*
@@ -124,6 +127,11 @@ export default class GameScene extends Phaser.Scene{
         let bat = new Bat(this, object.x, object.y, object.type);
         this.batGroup.add(bat);
         this.foesGroup.add(bat);
+      }
+      if (object.name === "fireworm") {
+        let fireworm = new Fireworm(this, object.x, object.y, object.type);
+        this.firewormGroup.add(fireworm);
+        this.foesGroup.add(fireworm);
       }
       if (object.name === "coin") {
         let coin = new Coin(this, object.x, object.y);
@@ -208,6 +216,15 @@ export default class GameScene extends Phaser.Scene{
       this
     );
     this.physics.add.collider(
+      this.firewormGroup,
+      this.turnGroup,
+      this.turnFoe,
+      () => {
+        return true;
+      },
+      this
+    );
+    this.physics.add.collider(
       this.batGroup,
       this.platform,
       this.turnFoe,
@@ -227,6 +244,7 @@ export default class GameScene extends Phaser.Scene{
     );
 
     this.physics.add.collider(this.zombieGroup, this.platform);
+    this.physics.add.collider(this.firewormGroup, this.platform);
   }
 
 
@@ -293,6 +311,15 @@ export default class GameScene extends Phaser.Scene{
         this.blows,
         this.batGroup,
         this.hitBat,
+        () => {
+          return true;
+        },
+        this
+      );
+      this.physics.add.overlap(
+        this.blows,
+        this.firewormGroup,
+        this.hitFireworm,
         () => {
           return true;
         },
@@ -442,7 +469,7 @@ export default class GameScene extends Phaser.Scene{
     }
   
   /*
-    This is called when the player hit a foe. On the screen, the player generates a blow object and when this collides with a foe, the enemy is destroyed. It plays the sound and kills the foe.
+    These functions are called when the player hits a foe. On the screen, the player generates a blow object and when this collides with a foe, the enemy is destroyed. It plays the sound and kills the foe.
   */
   hitZombie(blow, foe) {
     this.playAudio("behead");
@@ -450,6 +477,11 @@ export default class GameScene extends Phaser.Scene{
     this.spawnCoin(blow.x,blow.y);
   }
   hitBat(blow, foe) {
+    this.playAudio("kill");
+    foe.death();
+    this.spawnCoin(blow.x,blow.y);
+  }
+  hitFireworm(blow, foe) {
     this.playAudio("kill");
     foe.death();
     this.spawnCoin(blow.x,blow.y);
@@ -524,11 +556,13 @@ export default class GameScene extends Phaser.Scene{
       .setScale(1)
       .setOrigin(0.5)
       .setScrollFactor(0);
-    const coinAnimation = this.anims.create({
-      key: "coinscore",
-      frames: this.anims.generateFrameNumbers("coin", { start: 0, end: 7 }),
-      frameRate: 8,
-    });
+    if(!this.anims.exists("coinscore")){
+      this.anims.create({
+        key: "coinscore",
+        frames: this.anims.generateFrameNumbers("coin", { start: 0, end: 7 }),
+        frameRate: 8,
+      });
+    }
     this.scoreCoinsLogo.play({ key: "coinscore", repeat: -1 });
 
     this.scoreHearts = this.add
@@ -541,11 +575,13 @@ export default class GameScene extends Phaser.Scene{
       .setScale(1.5)
       .setOrigin(0.5)
       .setScrollFactor(0);
-    const heartAnimation = this.anims.create({
-      key: "heartscore",
-      frames: this.anims.generateFrameNumbers("heart", { start: 0, end: 6 }),
-      frameRate: 8,
-    });
+    if(!this.anims.exists("heartscore")){
+      this.anims.create({
+        key: "heartscore",
+        frames: this.anims.generateFrameNumbers("heart", { start: 0, end: 6 }),
+        frameRate: 8,
+      });
+    }
     this.scoreHeartsLogo.play({ key: "heartscore", repeat: -1 });
   }
 

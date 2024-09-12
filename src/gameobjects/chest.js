@@ -19,32 +19,34 @@ class Chest extends Phaser.GameObjects.Sprite {
     Inits the animations
     */
   init() {
-    this.scene.anims.create({
-      key: this.name,
-      frames: this.scene.anims.generateFrameNumbers(this.name, {
-        start: 0,
-        end: 0,
-      }),
-      frameRate: 1,
-    });
+    if(!this.scene.anims.exists(this.name)){
+      this.scene.anims.create({
+        key: this.name,
+        frames: this.scene.anims.generateFrameNumbers(this.name, {
+          start: 0,
+          end: 0,
+        }),
+        frameRate: 1,
+      });
 
-    this.scene.anims.create({
-      key: this.name + "opening",
-      frames: this.scene.anims.generateFrameNumbers(this.name, {
-        start: 0,
-        end: 9,
-      }),
-      frameRate: 20,
-    });
+      this.scene.anims.create({
+        key: this.name + "opening",
+        frames: this.scene.anims.generateFrameNumbers(this.name, {
+          start: 0,
+          end: 9,
+        }),
+        frameRate: 20,
+      });
 
-    this.scene.anims.create({
-      key: this.name + "opened",
-      frames: this.scene.anims.generateFrameNumbers(this.name, {
-        start: 9,
-        end: 9,
-      }),
-      frameRate: 1,
-    });
+      this.scene.anims.create({
+        key: this.name + "opened",
+        frames: this.scene.anims.generateFrameNumbers(this.name, {
+          start: 9,
+          end: 9,
+        }),
+        frameRate: 1,
+      });
+    }
 
     this.anims.play(this.name, true);
     this.on("animationcomplete", this.animationComplete, this);

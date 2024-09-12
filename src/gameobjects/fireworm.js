@@ -1,15 +1,21 @@
-export default class Zombie extends Phaser.Physics.Arcade.Sprite {
+import Fireball from "./fireball";
+
+export default class Fireworm extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, type = "right") {
-    super(scene, x, y, "zombie");
-    this.name = "zombie";
+    super(scene, x, y, "fireworm");
+    this.name = "fireworm";
     this.scene = scene;
     this.setScale(1);
     this.scene.physics.add.existing(this);
     this.scene.physics.world.enable(this);
     this.body.setAllowGravity(true);
-    this.body.setSize(31, 52);
+    this.body.setSize(56, 64);
     this.scene.add.existing(this);
     this.direction = type === "right" ? -1 : 1;
+    this.distanceBeforeAttack = 175;
+    this.distance = 0;
+    this.attacking = false;
+
     this.setPipeline('Light2D');
     this.init();
   }
@@ -18,32 +24,58 @@ export default class Zombie extends Phaser.Physics.Arcade.Sprite {
     if(!this.scene.anims.exists(this.name)){
       this.scene.anims.create({
         key: this.name,
-        frames: this.scene.anims.generateFrameNumbers(this.name, { start: 9, end: 16, }),
-        frameRate: 20,
+        frames: this.scene.anims.generateFrameNumbers(this.name, { start: 9, end: 17, }),
+        frameRate: 15,
         repeat: -1,
       });
       this.scene.anims.create({
+        key: this.name + "attack",
+        frames: this.scene.anims.generateFrameNumbers(this.name, { start: 36, end: 47, }),
+        frameRate: 15,
+      });
+      this.scene.anims.create({
+        key: this.name + "attackEnd",
+        frames: this.scene.anims.generateFrameNumbers(this.name, { start: 48, end: 51, }),
+        frameRate: 15,
+      });
+      this.scene.anims.create({
         key: this.name + "hit",
-        frames: this.scene.anims.generateFrameNumbers(this.name, { start: 36, end: 36, }),
+        frames: this.scene.anims.generateFrameNumbers(this.name, { start: 27, end: 29, }),
         frameRate: 20,
       });
       this.scene.anims.create({
         key: this.name + "death",
-        frames: this.scene.anims.generateFrameNumbers(this.name, { start: 27, end: 35, }),
+        frames: this.scene.anims.generateFrameNumbers(this.name, { start: 18, end: 25, }),
         frameRate: 8,
       });
     }
-    
+
     this.anims.play(this.name, true);
     this.body.setVelocityX(this.direction * 70);
     this.flipX = this.direction < 0;
     this.on("animationcomplete", this.animationComplete, this);
   }
  
+  update(){
+    if(!this.attacking && !this.dead){
+      if(this.distance >= this.distanceBeforeAttack){
+        this.distance = 0;
+        this.attack();
+      }
+      this.distance++;
+    }
+  }
+
   turn() {
     this.direction = -this.direction;
     this.flipX = this.direction < 0;
     this.body.setVelocityX(this.direction * 70);
+  }
+
+  attack(){
+    this.attacking = true;
+    this.body.setVelocityX(0);
+    this.anims.play(this.name + "attack");
   }
    
   death() {
@@ -70,6 +102,19 @@ export default class Zombie extends Phaser.Physics.Arcade.Sprite {
   }
     
   animationComplete(animation, frame) {
+    if (animation.key === this.name + "attack") {
+      //Spawn Fireball
+      const offsetX = this.direction > 0 ? 40 : -40;
+      this.fireball = new Fireball(this.scene, this.x + offsetX, this.y+7, this.direction > 0 ? "right":"left");
+      this.scene.fireballs.add(this.fireball);
+
+      this.anims.play(this.name + "attackEnd", true);
+    }
+    if (animation.key === this.name + "attackEnd") {
+      this.anims.play(this.name), true;
+      this.turn();
+      this.attacking = false;
+    }
     if (animation.key === this.name + "death") {
       this.scene.tweens.add({
         targets: this,
