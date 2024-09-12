@@ -34,7 +34,7 @@
   <object id="22" name="turn" x="837" y="259.909" width="46.8182" height="23.6364"/>
   <object id="16" name="coin" x="1005.33" y="344"/>
   <object id="28" name="coin" x="1366.67" y="342.667"/>
-  <object id="29" name="chest" x="1644.84" y="360.137"/>
+  <object id="29" name="chest" x="1647.84" y="360.137"/>
   <object id="33" name="coin" x="1931.17" y="268.5"/>
   <object id="34" name="coin" x="2107.83" y="364.5"/>
   <object id="38" name="bat" x="882" y="371.333"/>

@@ -9,7 +9,7 @@ class Player extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, health = 2) {
     super(scene, x, y, "player");
     this.setOrigin(0.5);
-    this.setScale(2);
+    this.setScale(1);
     this.scene.add.existing(this);
     this.scene.physics.add.existing(this);
     
@@ -60,7 +60,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
 
     this.right = true;
-    this.body.setSize(20, 30);
+    this.body.setSize(40, 60);
     this.body.setBounce(0.001);
     this.body.setCollideWorldBounds(true);
     this.init();

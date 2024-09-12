@@ -3,11 +3,11 @@ export default class Zombie extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, "zombie");
     this.name = "zombie";
     this.scene = scene;
-    this.setScale(1.75);
+    this.setScale(1);
     this.scene.physics.add.existing(this);
     this.scene.physics.world.enable(this);
     this.body.setAllowGravity(true);
-    this.body.setSize(18, 30);
+    this.body.setSize(31, 52);
     this.scene.add.existing(this);
     this.direction = type === "right" ? -1 : 1;
     this.setPipeline('Light2D');

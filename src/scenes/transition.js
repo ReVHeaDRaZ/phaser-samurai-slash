@@ -29,7 +29,7 @@ export default class Transition extends Phaser.Scene {
     else{
       this.addScore();
 
-      this.add.sprite(this.center_width, this.center_height - 170, "player").setScale(3);
+      this.add.sprite(this.center_width, this.center_height - 170, "player").setScale(2);
       this.add
         .bitmapText(
           this.center_width,
@@ -94,7 +94,7 @@ export default class Transition extends Phaser.Scene {
       .setScrollFactor(0);
     this.scoreCoinsLogo = this.add
       .sprite(this.center_width - 32, this.center_height - 75, "coin")
-      .setScale(0.7)
+      .setScale(1.25)
       .setOrigin(0.5)
       .setScrollFactor(0);
     const coinAnimation = this.anims.create({

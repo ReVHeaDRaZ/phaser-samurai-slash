@@ -4,11 +4,11 @@ export default class Bat extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, type = "right") {
     super(scene, x, y, "bat");
     this.name = "bat";
-    this.setScale(2.5);
+    this.setScale(1);
     this.scene.physics.add.existing(this);
     this.scene.physics.world.enable(this);
     this.body.setAllowGravity(false);
-    this.body.setSize(14, 12);
+    this.body.setSize(35, 30);
     this.body.immovable=true;
     this.scene.add.existing(this);
     this.direction = type === "right" ? 1 : -1;

@@ -105,7 +105,8 @@ export default class GameScene extends Phaser.Scene{
 
     this.lights.enable().setAmbientColor(0x888888);
     
-    // this.chest = new Chest(this,300,460); // FOR TESTING
+    this.fireworm = this.add.sprite(300,440,"fireworm");
+    //this.chest = new Chest(this,300,460); // FOR TESTING
     // this.chests.add(this.chest);
   }
 
@@ -170,7 +171,7 @@ export default class GameScene extends Phaser.Scene{
             object.type
           )
         );
-        this.exitDoor = this.add.sprite(object.x,object.y,"demon_door").setScale(1.5).setOrigin(0);
+        this.exitDoor = this.add.sprite(object.x,object.y,"demon_door").setScale(1).setOrigin(0);
         this.anims.create({
           key: "demon_door",
           frames: this.anims.generateFrameNumbers('demon_door', {start:0, end:3}),
@@ -520,7 +521,7 @@ export default class GameScene extends Phaser.Scene{
       .setScrollFactor(0);
     this.scoreCoinsLogo = this.add
       .sprite(50, 25, "coin")
-      .setScale(0.5)
+      .setScale(1)
       .setOrigin(0.5)
       .setScrollFactor(0);
     const coinAnimation = this.anims.create({
@@ -580,7 +581,7 @@ export default class GameScene extends Phaser.Scene{
       this.scoreCoins.setText("x" + coins);
       this.tweens.add({
         targets: [this.scoreCoinsLogo],
-        scale: { from: 1, to: 0.5 },
+        scale: { from: 1.5, to: 1 },
         duration: 50,
         repeat: 5,
       });

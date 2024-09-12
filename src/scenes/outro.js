@@ -106,7 +106,7 @@ export default class Outro extends Phaser.Scene {
       .setScrollFactor(0);
     this.scoreCoinsLogo = this.add
       .sprite(this.center_width - 32, this.center_height + 55, "coin")
-      .setScale(0.7)
+      .setScale(1.25)
       .setOrigin(0.5)
       .setScrollFactor(0);
     const coinAnimation = this.anims.create({

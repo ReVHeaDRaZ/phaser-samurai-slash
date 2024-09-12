@@ -96,32 +96,36 @@ export default class Bootloader extends Phaser.Scene {
       "assets/fonts/arcade.xml"
     );
 
-    this.load.spritesheet("player", "assets/images/DarkSamurai (64x64).png", {
-      frameWidth: 64, frameHeight: 64
+    this.load.spritesheet("player", "assets/images/DarkSamurai (128x128).png", {
+      frameWidth: 128, frameHeight: 128
     });
     this.load.spritesheet("zombie", "assets/images/zombie_spritesheet.png", {
+      frameWidth: 56,
+      frameHeight: 56,
+    });
+    this.load.spritesheet("coin", "assets/images/coin.png", {
       frameWidth: 32,
       frameHeight: 32,
     });
-    this.load.spritesheet("coin", "assets/images/coin.png", {
-      frameWidth: 64,
-      frameHeight: 64,
-    });
     this.load.spritesheet("demon_door", "assets/images/demon_door.png", {
-      frameWidth: 64,
-      frameHeight: 64,
+      frameWidth: 96,
+      frameHeight: 96,
     });
     this.load.spritesheet("heart", "assets/images/heart_rotate.png", {
       frameWidth: 20,
       frameHeight: 20,
     });
-    this.load.spritesheet("bat", "assets/images/bat.png", {
-      frameWidth: 16,
-      frameHeight: 16,
+    this.load.spritesheet("bat", "assets/images/bat_40x40.png", {
+      frameWidth: 40,
+      frameHeight: 40,
     });
     this.load.spritesheet("chest", "assets/images/chest.png", {
-      frameWidth: 48,
-      frameHeight: 32,
+      frameWidth: 96,
+      frameHeight: 64,
+    });
+    this.load.spritesheet("fireworm", "assets/images/fireworm_idle.png", {
+      frameWidth: 90,
+      frameHeight: 90,
     });
     
 

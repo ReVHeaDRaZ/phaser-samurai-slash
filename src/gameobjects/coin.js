@@ -2,7 +2,7 @@ class Coin extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, name = "coin") {
     super(scene, x, y, name);
     this.name = name;
-    this.setScale(0.5);
+    this.setScale(1);
     this.setOrigin(0.5);
 
     scene.add.existing(this);

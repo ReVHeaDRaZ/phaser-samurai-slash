@@ -3,7 +3,7 @@ class Chest extends Phaser.GameObjects.Sprite {
     super(scene, x, y, name);
     this.scene = scene;
     this.name = name;
-    this.setScale(1.75);
+    this.setScale(1);
     this.setOrigin(1);
 
     scene.add.existing(this);
@@ -74,12 +74,12 @@ class Chest extends Phaser.GameObjects.Sprite {
     const prize = ["dagger", "coin", "heart"];
     const selectedPrize = Phaser.Math.RND.pick(prize);
     this.scene.player.applyPrize(selectedPrize);
-    let scale = selectedPrize=="coin" ? 0.35 : selectedPrize=="heart" ? 1 : 1
+    let scale = selectedPrize=="coin" ? 0.5 : selectedPrize=="heart" ? 1 : 1
     
     if(selectedPrize=="coin"){
       this.scene.add.particles(this.x-60,this.y-10,'coin', {
         alpha: { start: 1, end: 0 },
-        scale: {start:0.05, end: 0.25},
+        scale: {start:0.05, end: 0.5},
         speedY: {random: [-200,-350]},
         speedX: {random: [-50, 50] },
         rotate: { min: -180, max: 180 },
