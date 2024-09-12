@@ -225,6 +225,15 @@ export default class GameScene extends Phaser.Scene{
       this
     );
     this.physics.add.collider(
+      this.fireballs,
+      this.platform,
+      this.turnFoe,
+      () => {
+        return true;
+      },
+      this
+    );
+    this.physics.add.collider(
       this.batGroup,
       this.platform,
       this.turnFoe,
@@ -354,6 +363,27 @@ export default class GameScene extends Phaser.Scene{
         },
         this
       );
+
+      this.physics.add.collider(
+        this.player,
+        this.firewormGroup,
+        this.hitPlayer,
+        () => {
+          return true;
+        },
+        this
+      );
+
+      this.physics.add.collider(
+        this.player,
+        this.fireballs,
+        this.hitPlayer,
+        () => {
+          return true;
+        },
+        this
+      );
+
       this.physics.add.overlap(
         this.daggers,
         this.zombieGroup,
@@ -367,6 +397,15 @@ export default class GameScene extends Phaser.Scene{
       this.physics.add.overlap(
         this.daggers,
         this.batGroup,
+        this.hitDagger,
+        () => {
+          return true;
+        },
+        this
+      );
+      this.physics.add.overlap(
+        this.daggers,
+        this.firewormGroup,
         this.hitDagger,
         () => {
           return true;
@@ -450,6 +489,7 @@ export default class GameScene extends Phaser.Scene{
   */
   hitPlayer(player, foe) {
     foe.turn();
+
     if (!player.invincible) {
       if (!player.dead) {
         player.hit();
@@ -483,8 +523,9 @@ export default class GameScene extends Phaser.Scene{
   }
   hitFireworm(blow, foe) {
     this.playAudio("kill");
-    foe.death();
-    this.spawnCoin(blow.x,blow.y);
+    foe.hit();
+    if(foe.dead)
+      this.spawnCoin(blow.x,blow.y);
   }
 
   /*
@@ -495,6 +536,8 @@ export default class GameScene extends Phaser.Scene{
         this.hitBat(dagger, hit);
       if(hit.name=="zombie")
         this.hitZombie(dagger,hit);
+      if(hit.name=="fireworm")
+        this.hitFireworm(dagger,hit);
 
       dagger.hit();
     }

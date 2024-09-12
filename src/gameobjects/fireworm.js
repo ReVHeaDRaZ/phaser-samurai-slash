@@ -9,12 +9,15 @@ export default class Fireworm extends Phaser.Physics.Arcade.Sprite {
     this.scene.physics.add.existing(this);
     this.scene.physics.world.enable(this);
     this.body.setAllowGravity(true);
-    this.body.setSize(56, 64);
+    this.body.setSize(56, 32);
+    this.setOffset(20,30);
     this.scene.add.existing(this);
     this.direction = type === "right" ? -1 : 1;
-    this.distanceBeforeAttack = 175;
+    this.distanceBeforeAttack = 100;
     this.distance = 0;
     this.attacking = false;
+    this.health = 2;
+    this.recovering = false;
 
     this.setPipeline('Light2D');
     this.init();
@@ -57,7 +60,7 @@ export default class Fireworm extends Phaser.Physics.Arcade.Sprite {
   }
  
   update(){
-    if(!this.attacking && !this.dead){
+    if(!this.attacking && !this.dead && !this.recovering){
       if(this.distance >= this.distanceBeforeAttack){
         this.distance = 0;
         this.attack();
@@ -78,13 +81,54 @@ export default class Fireworm extends Phaser.Physics.Arcade.Sprite {
     this.anims.play(this.name + "attack");
   }
    
+  hit(){
+    if(!this.recovering && !this.dead){
+      this.anims.play(this.name + "hit");
+      this.recovering = true;
+      this.health--;
+      console.log("HIT");
+      //Blood Spatter
+      this.scene.add.particles(this.x,this.y,'blood', {
+        tint: 0xff0000,
+        alpha: { start: .5, end: 0 },
+        scale: {start:0.1, end: 0.4},
+        speedY: {random: [-200,100]},
+        speedX: {random: [-50, 50] },
+        rotate: { min: -180, max: 180 },
+        lifespan: { min: 400, max: 800 },
+        frequency: 5,
+        duration: 100,
+        gravityY: 100,
+      });
+      //Pulse alpha while recovering, then on complete set recovering to false and continue walking;
+      this.scene.tweens.add({
+        targets: this,
+        duration: 200,
+        alpha: { from: 1, to: 0.75 },
+        repeat: 1,
+        onComplete: () => {
+          if(!this.dead){
+            this.recovering=false;
+            this.attacking=false;
+            this.setAlpha(1);
+            this.anims.play(this.name);
+            this.body.setVelocityX(this.direction * 70);
+          }
+        }
+      });
+    }
+
+    if(this.health <= 0){
+      this.death();
+    }
+  }
+
   death() {
     this.dead = true;
     this.body.enable = false;
     this.body.rotation = 0;
-    this.anims.play(this.name + 'hit');
-    this.anims.chain(this.name + "death");
-    
+    this.anims.play(this.name + "death", true);
+    //Blood Squirting
     this.scene.add.particles(this.x,this.y,'blood', {
       tint: 0xff0000,
       alpha: { start: .5, end: 0 },
