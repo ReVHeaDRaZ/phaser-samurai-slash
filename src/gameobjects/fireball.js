@@ -26,35 +26,42 @@ export default class Fireball extends Phaser.Physics.Arcade.Sprite {
         key: this.name + "explode",
         frames: this.scene.anims.generateFrameNumbers(this.name, { start: 7, end: 13, }),
         frameRate: 20,
+        repeat: 0,
       });
     }
 
     this.anims.play(this.name, true);
     this.on("animationcomplete", this.animationComplete, this);
 
+    // Add a light to follow on update
+    this.light = this.scene.lights.addLight(this.x, this.y, 75,0xffa500,0.5);
+
     this.body.setVelocityX(this.direction * 300);
     this.flipX = this.direction < 0;
-    //Destroy after 2secs
+    //Destroy after 5secs
     this.scene.time.delayedCall(
-      2000,
+      5000,
       () => {
-        this.scene.tweens.add({
-          targets: this,
-          duration: 200,
-          alpha: { from: 1, to: 0 },
-          onComplete: () => {
-            this.destroy();
-          },
-        });
+        this.destroy();
       },
       null,
       this
     );
   }
+
+  update(){
+    this.light.x = this.x;
+    this.light.y = this.y;
+  }
     
   hit() {
-    this.body.enable = false;   
-    this.anims.play(this.name + "explode",true); 
+    this.body.enable = false;
+    this.anims.play(this.name + "explode",true);
+    this.scene.tweens.add({ 
+      targets: this.light,
+      duration: 100,
+      intensity: {from: 1, to: 0}
+    });
   }
 
   turn(){
@@ -62,12 +69,14 @@ export default class Fireball extends Phaser.Physics.Arcade.Sprite {
   }
 
   animationComplete(animation, frame) {
-    if (animation.key === "explode") {
+    if (animation.key === this.name + "explode") {
       this.scene.tweens.add({
         targets: this,
-        duration: 200,
+        duration: 100,
         alpha: { from: 1, to: 0 },
         onComplete: () => {
+          console.log("explode");
+          this.scene.lights.removeLight(this.light);
           this.destroy();
         },
       });

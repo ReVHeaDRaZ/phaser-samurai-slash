@@ -24,7 +24,7 @@ export default class Transition extends Phaser.Scene {
 
     if (this.registry.get("hearts") <= 0)
       this.loadOutro(true);
-    else if (this.number === 3)
+    else if (this.number === 4)
       this.loadOutro();
     else{
       this.addScore();
@@ -97,11 +97,13 @@ export default class Transition extends Phaser.Scene {
       .setScale(1.25)
       .setOrigin(0.5)
       .setScrollFactor(0);
-    const coinAnimation = this.anims.create({
-      key: "coinscore",
-      frames: this.anims.generateFrameNumbers("coin", { start: 0, end: 7 }),
-      frameRate: 8,
-    });
+    if(!this.anims.exists("coinscore")){
+      this.anims.create({
+        key: "coinscore",
+        frames: this.anims.generateFrameNumbers("coin", { start: 0, end: 7 }),
+        frameRate: 8,
+      });
+    }
     this.scoreCoinsLogo.play({ key: "coinscore", repeat: -1 });
 
     this.scoreHearts = this.add
@@ -114,11 +116,13 @@ export default class Transition extends Phaser.Scene {
       .setScale(1.7)
       .setOrigin(0.5)
       .setScrollFactor(0);
-    const heartAnimation = this.anims.create({
-      key: "heartscore",
-      frames: this.anims.generateFrameNumbers("heart", { start: 0, end: 6 }),
-      frameRate: 8,
-    });
+    if(!this.anims.exists("heartscore")){
+      this.anims.create({
+        key: "heartscore",
+        frames: this.anims.generateFrameNumbers("heart", { start: 0, end: 6 }),
+        frameRate: 8,
+      });
+    }
     this.scoreHeartsLogo.play({ key: "heartscore", repeat: -1 });
   }
 

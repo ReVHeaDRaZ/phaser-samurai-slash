@@ -58,11 +58,11 @@
             "expandedObjectLayers": [
                 3
             ],
-            "scale": 1.5,
+            "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1690.6666666666665,
-                "y": 278.3333333333333
+                "x": 1232,
+                "y": 115
             }
         },
         "scene1.tmx#background": {
@@ -78,14 +78,31 @@
             "scale": 5.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1399.4545454545455,
-                "y": 353.90909090909093
+                "x": 1800,
+                "y": 264.0909090909091
             }
         },
         "scene2.tmx#background": {
             "scaleInDock": 1
         },
         "scene2.tmx#oak_woods": {
+            "scaleInDock": 1
+        },
+        "scene3.tmx": {
+            "expandedObjectLayers": [
+                3
+            ],
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 3106,
+                "y": 294.5
+            }
+        },
+        "scene3.tmx#background": {
+            "scaleInDock": 1
+        },
+        "scene3.tmx#oak_woods": {
             "scaleInDock": 1
         }
     },

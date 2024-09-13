@@ -94,6 +94,7 @@ export default class GameScene extends Phaser.Scene{
     this.firewormGroup = this.add.group();
     this.firewormGroup.runChildUpdate = true;
     this.fireballs = this.add.group();
+    this.fireballs.runChildUpdate = true;
     this.foesGroup = this.add.group();
     this.turnGroup = this.add.group();
     this.exitGroup = this.add.group();
@@ -109,8 +110,8 @@ export default class GameScene extends Phaser.Scene{
 
     this.lights.enable().setAmbientColor(0x888888);
     
-    this.fireworm = new Fireworm(this,280,400);
-    this.firewormGroup.add(this.fireworm);
+    // this.fireworm = new Fireworm(this,280,400);
+    // this.firewormGroup.add(this.fireworm);
   }
 
   /*
@@ -180,18 +181,20 @@ export default class GameScene extends Phaser.Scene{
           )
         );
         this.exitDoor = this.add.sprite(object.x,object.y,"demon_door").setScale(1).setOrigin(0);
-        this.anims.create({
-          key: "demon_door",
-          frames: this.anims.generateFrameNumbers('demon_door', {start:0, end:3}),
-          frameRate: 5,
-          repeat: 0,
-        });
-        this.anims.create({
-          key: "demon_door_open",
-          frames: this.anims.generateFrameNumbers('demon_door', {start:3, end:3}),
-          frameRate: 1,
-          repeat: -1,
-        });
+        if(!this.anims.exists("demon_door")){
+          this.anims.create({
+            key: "demon_door",
+            frames: this.anims.generateFrameNumbers('demon_door', {start:0, end:3}),
+            frameRate: 5,
+            repeat: 0,
+          });
+          this.anims.create({
+            key: "demon_door_open",
+            frames: this.anims.generateFrameNumbers('demon_door', {start:3, end:3}),
+            frameRate: 1,
+            repeat: -1,
+          });
+        }
       }
     });
   }
@@ -242,15 +245,15 @@ export default class GameScene extends Phaser.Scene{
       },
       this
     );
-    this.physics.add.collider(
-      this.batGroup,
-      this.platformGroup,
-      this.turnFoe,
-      () => {
-        return true;
-      },
-      this
-    );
+    // this.physics.add.collider(
+    //   this.batGroup,
+    //   this.platformGroup,
+    //   this.turnFoe,
+    //   () => {
+    //     return true;
+    //   },
+    //   this
+    // );
 
     this.physics.add.collider(this.zombieGroup, this.platform);
     this.physics.add.collider(this.firewormGroup, this.platform);

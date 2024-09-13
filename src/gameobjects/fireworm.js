@@ -13,7 +13,7 @@ export default class Fireworm extends Phaser.Physics.Arcade.Sprite {
     this.setOffset(20,30);
     this.scene.add.existing(this);
     this.direction = type === "right" ? -1 : 1;
-    this.distanceBeforeAttack = 100;
+    this.distanceBeforeAttack = 75;
     this.distance = 0;
     this.attacking = false;
     this.health = 2;
@@ -62,7 +62,6 @@ export default class Fireworm extends Phaser.Physics.Arcade.Sprite {
   update(){
     if(!this.attacking && !this.dead && !this.recovering){
       if(this.distance >= this.distanceBeforeAttack){
-        this.distance = 0;
         this.attack();
       }
       this.distance++;
@@ -86,7 +85,8 @@ export default class Fireworm extends Phaser.Physics.Arcade.Sprite {
       this.anims.play(this.name + "hit");
       this.recovering = true;
       this.health--;
-      console.log("HIT");
+      this.body.setVelocityY(-200);
+      //this.body.setVelocityX(-this.direction * 70);
       //Blood Spatter
       this.scene.add.particles(this.x,this.y,'blood', {
         tint: 0xff0000,
@@ -151,7 +151,7 @@ export default class Fireworm extends Phaser.Physics.Arcade.Sprite {
       const offsetX = this.direction > 0 ? 40 : -40;
       this.fireball = new Fireball(this.scene, this.x + offsetX, this.y+7, this.direction > 0 ? "right":"left");
       this.scene.fireballs.add(this.fireball);
-
+      this.distance = 0;
       this.anims.play(this.name + "attackEnd", true);
     }
     if (animation.key === this.name + "attackEnd") {

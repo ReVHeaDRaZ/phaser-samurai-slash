@@ -83,54 +83,56 @@ class Player extends Phaser.GameObjects.Sprite {
 
   init() {
     //Animations
-    this.scene.anims.create({
-      key: "idle",
-      frames: this.scene.anims.generateFrameNumbers('player', {start:0, end:7}),
-      frameRate: 10,
-      repeat: -1,
-    });
-    this.scene.anims.create({
-      key: "run",
-      frames: this.scene.anims.generateFrameNumbers("player", {start:14, end:21}),
-      frameRate: 10,
-      repeat: -1
-    });
-    this.scene.anims.create({
-      key: "attack1",
-      frames: this.scene.anims.generateFrameNumbers("player", {start:28, end:31}),
-      frameRate: 10,
-      repeat: 0
-    });
-    this.scene.anims.create({
-      key: "attack2",
-      frames: this.scene.anims.generateFrameNumbers("player", {start:42, end:44}),
-      frameRate: 10,
-      repeat: 0
-    });
-    this.scene.anims.create({
-      key: "jumpUp",
-      frames: this.scene.anims.generateFrameNumbers("player", {start:56, end:59}),
-      frameRate: 10,
-      repeat: -1
-    });
-    this.scene.anims.create({
-      key: "jumpDown",
-      frames: this.scene.anims.generateFrameNumbers("player", {start:70, end:73}),
-      frameRate: 10,
-      repeat: -1
-    });
-    this.scene.anims.create({
-      key: "hurt",
-      frames: this.scene.anims.generateFrameNumbers("player", {start:84, end:85}),
-      frameRate: 10,
-      repeat: -1
-    });
-    this.scene.anims.create({
-      key: "die",
-      frames: this.scene.anims.generateFrameNumbers("player", {start:98, end:111}),
-      frameRate: 20,
-      repeat: 0
-    });
+    if(!this.scene.anims.exists("idle")){
+      this.scene.anims.create({
+        key: "idle",
+        frames: this.scene.anims.generateFrameNumbers('player', {start:0, end:7}),
+        frameRate: 10,
+        repeat: -1,
+      });
+      this.scene.anims.create({
+        key: "run",
+        frames: this.scene.anims.generateFrameNumbers("player", {start:14, end:21}),
+        frameRate: 10,
+        repeat: -1
+      });
+      this.scene.anims.create({
+        key: "attack1",
+        frames: this.scene.anims.generateFrameNumbers("player", {start:28, end:31}),
+        frameRate: 10,
+        repeat: 0
+      });
+      this.scene.anims.create({
+        key: "attack2",
+        frames: this.scene.anims.generateFrameNumbers("player", {start:42, end:44}),
+        frameRate: 10,
+        repeat: 0
+      });
+      this.scene.anims.create({
+        key: "jumpUp",
+        frames: this.scene.anims.generateFrameNumbers("player", {start:56, end:59}),
+        frameRate: 10,
+        repeat: -1
+      });
+      this.scene.anims.create({
+        key: "jumpDown",
+        frames: this.scene.anims.generateFrameNumbers("player", {start:70, end:73}),
+        frameRate: 10,
+        repeat: -1
+      });
+      this.scene.anims.create({
+        key: "hurt",
+        frames: this.scene.anims.generateFrameNumbers("player", {start:84, end:85}),
+        frameRate: 10,
+        repeat: -1
+      });
+      this.scene.anims.create({
+        key: "die",
+        frames: this.scene.anims.generateFrameNumbers("player", {start:98, end:111}),
+        frameRate: 20,
+        repeat: 0
+      });
+    }
 
     this.anims.play("idle", true);
     this.on("animationcomplete", this.animationComplete, this);
@@ -191,9 +193,11 @@ class Player extends Phaser.GameObjects.Sprite {
       }
       this.body.setVelocityX(0);
     }
+
     if (Phaser.Input.Keyboard.JustDown(this.spaceBar)) this.attack();
     if(this.blow){
       this.blow.y = this.y;
+      this.blow.x = this.x + (this.right ? 40 : -40);
     }
   }
 
