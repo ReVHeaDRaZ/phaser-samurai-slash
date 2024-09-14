@@ -132,6 +132,10 @@ export default class Bootloader extends Phaser.Scene {
       frameWidth: 46,
       frameHeight: 46,
     });
+    this.load.spritesheet("shadowmonster", "assets/images/shadow-80x70.png", {
+      frameWidth: 80,
+      frameHeight: 70,
+    });
     
 
     if (this.sys.game.device.os.desktop)

@@ -75,7 +75,6 @@ export default class Fireball extends Phaser.Physics.Arcade.Sprite {
         duration: 100,
         alpha: { from: 1, to: 0 },
         onComplete: () => {
-          console.log("explode");
           this.scene.lights.removeLight(this.light);
           this.destroy();
         },

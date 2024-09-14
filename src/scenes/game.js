@@ -10,6 +10,7 @@ import Platform from "../gameobjects/platform";
 import Chest from "../gameobjects/chest";
 import Dagger from "../gameobjects/dagger";
 import Fireworm from "../gameobjects/fireworm";
+import ShadowMonster from "../gameobjects/shadowmonster";
 
 export default class GameScene extends Phaser.Scene{
   constructor(){
@@ -95,6 +96,8 @@ export default class GameScene extends Phaser.Scene{
     this.firewormGroup.runChildUpdate = true;
     this.fireballs = this.add.group();
     this.fireballs.runChildUpdate = true;
+    this.shadowmonsterGroup = this.add.group();
+    this.shadowmonsterGroup.runChildUpdate = true;
     this.foesGroup = this.add.group();
     this.turnGroup = this.add.group();
     this.exitGroup = this.add.group();
@@ -110,8 +113,8 @@ export default class GameScene extends Phaser.Scene{
 
     this.lights.enable().setAmbientColor(0x888888);
     
-    // this.fireworm = new Fireworm(this,280,400);
-    // this.firewormGroup.add(this.fireworm);
+    //this.shadowmonster = new ShadowMonster(this,280,400);
+    //this.shadowmonsterGroup.add(this.shadowmonster);
   }
 
   /*
@@ -133,6 +136,11 @@ export default class GameScene extends Phaser.Scene{
         let fireworm = new Fireworm(this, object.x, object.y, object.type);
         this.firewormGroup.add(fireworm);
         this.foesGroup.add(fireworm);
+      }
+      if (object.name === "shadowmonster") {
+        let shadowmonster = new ShadowMonster(this, object.x, object.y, object.type);
+        this.shadowmonsterGroup.add(shadowmonster);
+        this.foesGroup.add(shadowmonster);
       }
       if (object.name === "coin") {
         let coin = new Coin(this, object.x, object.y);
@@ -228,6 +236,15 @@ export default class GameScene extends Phaser.Scene{
       this
     );
     this.physics.add.collider(
+      this.shadowmonsterGroup,
+      this.turnGroup,
+      this.turnFoe,
+      () => {
+        return true;
+      },
+      this
+    );
+    this.physics.add.collider(
       this.fireballs,
       this.platform,
       this.turnFoe,
@@ -257,6 +274,7 @@ export default class GameScene extends Phaser.Scene{
 
     this.physics.add.collider(this.zombieGroup, this.platform);
     this.physics.add.collider(this.firewormGroup, this.platform);
+    this.physics.add.collider(this.shadowmonsterGroup, this.platform);
   }
 
 
@@ -339,6 +357,15 @@ export default class GameScene extends Phaser.Scene{
       );
       this.physics.add.overlap(
         this.blows,
+        this.shadowmonsterGroup,
+        this.hitShadowmonster,
+        () => {
+          return true;
+        },
+        this
+      );
+      this.physics.add.overlap(
+        this.blows,
         this.chests,
         this.hitChest,
         () => {
@@ -387,6 +414,17 @@ export default class GameScene extends Phaser.Scene{
         this
       );
 
+      this.physics.add.collider(
+        this.player,
+        this.shadowmonsterGroup,
+        this.hitPlayer,
+        (player, shadowmonster) => {
+          if(!shadowmonster.attacking)
+            return false;
+        },
+        this
+      );
+
       this.physics.add.overlap(
         this.daggers,
         this.zombieGroup,
@@ -409,6 +447,15 @@ export default class GameScene extends Phaser.Scene{
       this.physics.add.overlap(
         this.daggers,
         this.firewormGroup,
+        this.hitDagger,
+        () => {
+          return true;
+        },
+        this
+      );
+      this.physics.add.overlap(
+        this.daggers,
+        this.shadowmonsterGroup,
         this.hitDagger,
         () => {
           return true;
@@ -532,7 +579,15 @@ export default class GameScene extends Phaser.Scene{
   }
   hitFireworm(blow, foe) {
     this.playAudio("kill");
-    foe.hit();
+    const hitDirection = blow.x < foe.x ? "left" : "right";
+    foe.hit(hitDirection);
+    if(foe.dead)
+      this.spawnCoin(blow.x,blow.y);
+  }
+  hitShadowmonster(blow, foe) {
+    this.playAudio("kill");
+    const hitDirection = blow.x < foe.x ? "left" : "right";
+    foe.hit(hitDirection);
     if(foe.dead)
       this.spawnCoin(blow.x,blow.y);
   }
@@ -546,6 +601,8 @@ export default class GameScene extends Phaser.Scene{
       if(hit.name=="zombie")
         this.hitZombie(dagger,hit);
       if(hit.name=="fireworm")
+        this.hitFireworm(dagger,hit);
+      if(hit.name=="shadowmonster")
         this.hitFireworm(dagger,hit);
 
       dagger.hit();

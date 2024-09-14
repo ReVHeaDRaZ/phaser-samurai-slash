@@ -1,20 +1,17 @@
-import Fireball from "./fireball";
-
-export default class Fireworm extends Phaser.Physics.Arcade.Sprite {
+export default class ShadowMonster extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, type = "right") {
-    super(scene, x, y, "fireworm");
-    this.name = "fireworm";
+    super(scene, x, y, "shadowmonster");
+    this.name = "shadowmonster";
     this.scene = scene;
     this.setScale(1);
     this.scene.physics.add.existing(this);
     this.scene.physics.world.enable(this);
     this.body.setAllowGravity(true);
-    this.body.setSize(56, 32);
-    this.setOffset(20,30);
+    this.setOffset(0,-5);
     this.scene.add.existing(this);
     this.direction = type === "right" ? -1 : 1;
-    this.walkSpeed = 70;
-    this.distanceBeforeAttack = 70;
+    this.walkSpeed = 100;
+    this.distanceBeforeAttack = 75;
     this.distance = 0;
     this.attacking = false;
     this.health = 2;
@@ -28,35 +25,42 @@ export default class Fireworm extends Phaser.Physics.Arcade.Sprite {
     if(!this.scene.anims.exists(this.name)){
       this.scene.anims.create({
         key: this.name,
-        frames: this.scene.anims.generateFrameNumbers(this.name, { start: 9, end: 17, }),
-        frameRate: 15,
+        frames: this.scene.anims.generateFrameNumbers(this.name, { start: 0, end: 4, }),
+        frameRate: 10,
+        yoyo: true,
         repeat: -1,
       });
       this.scene.anims.create({
         key: this.name + "attack",
-        frames: this.scene.anims.generateFrameNumbers(this.name, { start: 36, end: 47, }),
+        frames: this.scene.anims.generateFrameNumbers(this.name, { start: 5, end: 13, }),
+        frameRate: 25,
+      });
+      this.scene.anims.create({
+        key: this.name + "attackLoop",
+        frames: this.scene.anims.generateFrameNumbers(this.name, { start: 16, end: 19, }),
         frameRate: 15,
+        repeat: 2
       });
       this.scene.anims.create({
         key: this.name + "attackEnd",
-        frames: this.scene.anims.generateFrameNumbers(this.name, { start: 48, end: 51, }),
-        frameRate: 15,
+        frames: this.scene.anims.generateFrameNumbers(this.name, { start: 5, end: 13, }),
+        frameRate: 35,
       });
       this.scene.anims.create({
         key: this.name + "hit",
-        frames: this.scene.anims.generateFrameNumbers(this.name, { start: 27, end: 29, }),
+        frames: this.scene.anims.generateFrameNumbers(this.name, { start: 16, end: 19, }),
         frameRate: 20,
       });
       this.scene.anims.create({
         key: this.name + "death",
-        frames: this.scene.anims.generateFrameNumbers(this.name, { start: 18, end: 25, }),
+        frames: this.scene.anims.generateFrameNumbers(this.name, { start: 16, end: 19, }),
         frameRate: 8,
       });
     }
 
     this.anims.play(this.name, true);
     this.body.setVelocityX(this.direction * this.walkSpeed);
-    this.flipX = this.direction < 0;
+    this.flipX = this.direction > 0;
     this.on("animationcomplete", this.animationComplete, this);
   }
  
@@ -71,7 +75,7 @@ export default class Fireworm extends Phaser.Physics.Arcade.Sprite {
 
   turn() {
     this.direction = -this.direction;
-    this.flipX = this.direction < 0;
+    this.flipX = this.direction > 0;
     this.body.setVelocityX(this.direction * this.walkSpeed);
   }
 
@@ -82,19 +86,19 @@ export default class Fireworm extends Phaser.Physics.Arcade.Sprite {
   }
    
   hit(hitDirection){
-    if(!this.recovering && !this.dead){
+    // Can only be hit if attacking
+    if(!this.recovering && !this.dead && this.attacking){
       this.anims.play(this.name + "hit");
       this.recovering = true;
       this.health--;
-            
-      // Physics bump up and in the direction of hit
-      this.body.setVelocityY(-200);
+                  
+      // Physics bump in the direction of hit
       if(hitDirection == "left")
         this.body.setVelocityX(100);
       
       if(hitDirection == "right")
         this.body.setVelocityX(-100);
-      
+  
       //Blood Spatter
       this.scene.add.particles(this.x,this.y,'blood', {
         tint: 0xff0000,
@@ -155,17 +159,16 @@ export default class Fireworm extends Phaser.Physics.Arcade.Sprite {
     
   animationComplete(animation, frame) {
     if (animation.key === this.name + "attack") {
-      //Spawn Fireball
-      const offsetX = this.direction > 0 ? 40 : -40;
-      this.fireball = new Fireball(this.scene, this.x + offsetX, this.y+7, this.direction > 0 ? "right":"left");
-      this.scene.fireballs.add(this.fireball);
       this.distance = 0;
-      this.anims.play(this.name + "attackEnd", true);
+      this.anims.play(this.name + "attackLoop", true);
     }
-    if (animation.key === this.name + "attackEnd") {
-      this.anims.play(this.name, true);
+    if (animation.key === this.name + "attackLoop") {
+      this.anims.playReverse(this.name + "attackEnd", true);
       this.turn();
       this.attacking = false;
+    }
+    if (animation.key === this.name + "attackEnd") {
+      this.anims.play(this.name,true);
     }
     if (animation.key === this.name + "death") {
       this.scene.tweens.add({

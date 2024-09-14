@@ -53,6 +53,7 @@ export class JumpSmoke extends Phaser.GameObjects.Ellipse {
     scene.physics.add.existing(this);
     this.body.setAllowGravity(false);
     this.body.setVelocityX(Phaser.Math.Between(-20, 20));
+    this.body.setVelocityY(Phaser.Math.Between(0,-10))
     this.init();
   }
   init() {
