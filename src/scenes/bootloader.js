@@ -112,7 +112,7 @@ export default class Bootloader extends Phaser.Scene {
       frameWidth: 96,
       frameHeight: 96,
     });
-    this.load.spritesheet("heart", "assets/images/heart_rotate.png", {
+    this.load.spritesheet("heart", "assets/images/heart_rotate2.png", {
       frameWidth: 20,
       frameHeight: 20,
     });

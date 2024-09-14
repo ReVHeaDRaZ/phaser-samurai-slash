@@ -122,6 +122,11 @@ export default class Transition extends Phaser.Scene {
         frames: this.anims.generateFrameNumbers("heart", { start: 0, end: 6 }),
         frameRate: 8,
       });
+      this.anims.create({
+        key: "hurtheartscore",
+        frames: this.anims.generateFrameNumbers("heart", { start: 9, end: 15 }),
+        frameRate: 8,
+      });
     }
     this.scoreHeartsLogo.play({ key: "heartscore", repeat: -1 });
   }

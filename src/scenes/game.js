@@ -29,7 +29,7 @@ export default class GameScene extends Phaser.Scene{
 
   create(){
     this.levelFinished = false;
-    this.cameras.main.setBackgroundColor(0x62a2bf); //(0x00b140)//(0x62a2bf)
+    this.cameras.main.setBackgroundColor(0x181818); //(0x00b140)//(0x62a2bf)
     
     this.createParallaxBackground();
     this.createMap();
@@ -470,8 +470,10 @@ export default class GameScene extends Phaser.Scene{
         this.updateHearts(1);
       }
       else{
-        heart.pick(this.player.x,this.player.y);
+        heart.pick(x,y);
         this.player.setNotHurt();
+        this.scoreHeartsLogo.play({ key: "heartscore", repeat: -1 },true);
+        this.scoreHeartsLogo.setTint(0xffffff);
       }
     }
   }
@@ -488,7 +490,8 @@ export default class GameScene extends Phaser.Scene{
   }
 
   /*
-    This function is called when the player is hit by a foe. If the player is invincible (because of a power-up), do nothing. If not, then the player is hit.
+    This function is called when the player is hit by a foe.
+    If the player is invincible (because of a power-up), do nothing. If not, then the player is hit, and sets hurtheart on the hud.
   */
   hitPlayer(player, foe) {
     foe.turn();
@@ -497,6 +500,9 @@ export default class GameScene extends Phaser.Scene{
       if (!player.dead) {
         player.hit();
         this.playAudio("death");
+        this.scoreHeartsLogo.play({ key: "hurtheartscore", repeat: -1 },true);
+        this.scoreHeartsLogo.setTint(0x999999);
+        this.cameras.main.shake(100,0.01);
       }
     }
   }
@@ -627,6 +633,11 @@ export default class GameScene extends Phaser.Scene{
         frames: this.anims.generateFrameNumbers("heart", { start: 0, end: 6 }),
         frameRate: 8,
       });
+      this.anims.create({
+        key: "hurtheartscore",
+        frames: this.anims.generateFrameNumbers("heart", { start: 9, end: 15 }),
+        frameRate: 8,
+      });
     }
     this.scoreHeartsLogo.play({ key: "heartscore", repeat: -1 });
   }
@@ -673,9 +684,10 @@ export default class GameScene extends Phaser.Scene{
       const hearts = +this.registry.get("hearts") + amount;
       this.registry.set("hearts", hearts);
       this.scoreHearts.setText("x" + hearts);
+      
       this.tweens.add({
         targets: [this.scoreHeartsLogo],
-        scale: { from: 1.5, to: 1 },
+        scale: { from: 2, to: 1.5 },
         duration: 50,
         repeat: 5,
       });
