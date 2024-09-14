@@ -14,7 +14,7 @@ export default class ShadowMonster extends Phaser.Physics.Arcade.Sprite {
     this.distanceBeforeAttack = 75;
     this.distance = 0;
     this.attacking = false;
-    this.health = 2;
+    this.health = 3;
     this.recovering = false;
 
     this.setPipeline('Light2D');
@@ -33,7 +33,7 @@ export default class ShadowMonster extends Phaser.Physics.Arcade.Sprite {
       this.scene.anims.create({
         key: this.name + "attack",
         frames: this.scene.anims.generateFrameNumbers(this.name, { start: 5, end: 13, }),
-        frameRate: 25,
+        frameRate: 30,
       });
       this.scene.anims.create({
         key: this.name + "attackLoop",
@@ -44,17 +44,17 @@ export default class ShadowMonster extends Phaser.Physics.Arcade.Sprite {
       this.scene.anims.create({
         key: this.name + "attackEnd",
         frames: this.scene.anims.generateFrameNumbers(this.name, { start: 5, end: 13, }),
-        frameRate: 35,
+        frameRate: 40,
       });
       this.scene.anims.create({
         key: this.name + "hit",
-        frames: this.scene.anims.generateFrameNumbers(this.name, { start: 16, end: 19, }),
-        frameRate: 20,
+        frames: this.scene.anims.generateFrameNumbers(this.name, { start: 15, end: 16, }),
+        frameRate: 10,
       });
       this.scene.anims.create({
         key: this.name + "death",
-        frames: this.scene.anims.generateFrameNumbers(this.name, { start: 16, end: 19, }),
-        frameRate: 8,
+        frames: this.scene.anims.generateFrameNumbers(this.name, { start: 20, end: 23, }),
+        frameRate: 15,
       });
     }
 
@@ -80,7 +80,7 @@ export default class ShadowMonster extends Phaser.Physics.Arcade.Sprite {
   }
 
   attack(){
-    this.attacking = true;
+    this.recovering=true;
     this.body.setVelocityX(0);
     this.anims.play(this.name + "attack");
   }
@@ -99,9 +99,9 @@ export default class ShadowMonster extends Phaser.Physics.Arcade.Sprite {
       if(hitDirection == "right")
         this.body.setVelocityX(-100);
   
-      //Blood Spatter
+      //Black Spatter
       this.scene.add.particles(this.x,this.y,'blood', {
-        tint: 0xff0000,
+        tint: 0x220000,
         alpha: { start: .5, end: 0 },
         scale: {start:0.1, end: 0.4},
         speedY: {random: [-200,100]},
@@ -140,26 +140,26 @@ export default class ShadowMonster extends Phaser.Physics.Arcade.Sprite {
     this.body.enable = false;
     this.body.rotation = 0;
     this.anims.play(this.name + "death", true);
-    //Blood Squirting
+    //Black Spatter
     this.scene.add.particles(this.x,this.y,'blood', {
-      tint: 0xff0000,
+      tint: 0x220000,
       alpha: { start: .5, end: 0 },
-      scale: {start:0.01, end: 0.4},
-      speedY: {random: [-200,-350]},
+      scale: {start:0.1, end: 0.4},
+      speedY: {random: [-200,100]},
       speedX: {random: [-50, 50] },
       rotate: { min: -180, max: 180 },
-      lifespan: { min: 500, max: 1000 },
-      frequency: 10,
-      duration: 1000,
-      gravityY: 700,
-      bounds: {x:this.x-50, y:this.y-50, width: 100, height: 64},
-      collideBotton: true
-    });    
+      lifespan: { min: 400, max: 800 },
+      frequency: 5,
+      duration: 100,
+      gravityY: 100,
+    });
   }
     
   animationComplete(animation, frame) {
     if (animation.key === this.name + "attack") {
       this.distance = 0;
+      this.attacking = true;
+      this.recovering=false;
       this.anims.play(this.name + "attackLoop", true);
     }
     if (animation.key === this.name + "attackLoop") {
