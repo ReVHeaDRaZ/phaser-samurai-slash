@@ -38,7 +38,7 @@ export default class GameScene extends Phaser.Scene{
     this.physics.world.setBounds(0, 0, 20920 * 2, 20080 * 2);
     this.addPlayer();
 
-    this.cameras.main.startFollow(this.player, true, 0.05, 0.05, 0, 240);
+    this.cameras.main.startFollow(this.player, true, 0.05, 0.05, 0, 1200);
     this.physics.world.enable([this.player]);
     
     this.loadAudios();

@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "scene1.tmx",
+    "activeFile": "scene3.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -92,18 +92,18 @@
             "expandedObjectLayers": [
                 3
             ],
-            "scale": 1,
+            "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 3106,
-                "y": 294.5
+                "x": 1557,
+                "y": 353
             }
         },
         "scene3.tmx#background": {
             "scaleInDock": 1
         },
         "scene3.tmx#oak_woods": {
-            "scaleInDock": 1
+            "scaleInDock": 0.75
         }
     },
     "last.exportedFilePath": "C:/Users/Ryan/HtmlProjects/phaser/phaser-samurai-slash/public/assets/maps",
@@ -113,13 +113,15 @@
     "openFiles": [
         "scene0.tmx",
         "scene1.tmx",
-        "scene2.tmx"
+        "scene2.tmx",
+        "scene3.tmx"
     ],
     "project": "scene0.tiled-project",
     "recentFiles": [
         "scene0.tmx",
-        "scene2.tmx",
         "scene1.tmx",
+        "scene2.tmx",
+        "scene3.tmx",
         "C:/Users/Ryan/HtmlProjects/phaser/wallhammer/public/assets/maps/scene0.json",
         "landscape.tsx",
         "grass.tsx"
