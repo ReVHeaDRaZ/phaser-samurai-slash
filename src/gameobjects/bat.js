@@ -12,6 +12,7 @@ export default class Bat extends Phaser.Physics.Arcade.Sprite {
     this.body.immovable=true;
     this.scene.add.existing(this);
     this.direction = type === "right" ? 1 : -1;
+    this.flyingSpeed = 150;
 
     this.body.world.on('worldbounds', function(body) {
       // Checks if it's the sprite that you'listening for
@@ -49,8 +50,8 @@ export default class Bat extends Phaser.Physics.Arcade.Sprite {
     }
     
     this.anims.play(this.name, true);
-    this.body.setVelocityX(this.direction * 150);
-    this.flipX = this.direction > 0;
+    this.body.setVelocityX(this.direction * this.flyingSpeed);
+    this.flipX = this.direction < 0;
     this.on("animationcomplete", this.animationComplete, this);
   }
 
@@ -62,8 +63,8 @@ export default class Bat extends Phaser.Physics.Arcade.Sprite {
     */
   turn() {
     this.direction = -this.direction;
-    this.flipX = this.direction > 0;
-    this.body.setVelocityX(this.direction * 150);
+    this.flipX = this.direction < 0;
+    this.body.setVelocityX(this.direction * this.flyingSpeed);
   }
 
   /*
