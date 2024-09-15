@@ -22,9 +22,10 @@ export default class Transition extends Phaser.Scene {
     this.cameras.main.setBackgroundColor(0x181818); //(0x00b140)//(0x62a2bf)
     this.add.tileSprite(0, 0, sizes.width, sizes.height+sizes.controlsHeight, "bg1").setOrigin(0).setScale(4).setScrollFactor(0,0).setTint(0x333333);
 
+    //Load outro scene if out of live or finished game
     if (this.registry.get("hearts") <= 0)
       this.loadOutro(true);
-    else if (this.number === 4)
+    else if (this.number === 5)
       this.loadOutro();
     else{
       this.addScore();
@@ -52,7 +53,7 @@ export default class Transition extends Phaser.Scene {
       this.input.keyboard.on("keydown-SPACE", () => this.loadNext(), this);
       this.input.on('pointerdown', () => this.loadNext(), this);
       this.time.delayedCall(
-        3000,
+        4000,
         () => {
           this.loadNext();
         },
