@@ -137,6 +137,10 @@ export default class Bootloader extends Phaser.Scene {
       frameWidth: 80,
       frameHeight: 70,
     });
+    this.load.spritesheet("fireslash", "assets/images/FireSlash.png", {
+      frameWidth: 128,
+      frameHeight: 128,
+    });
     
 
     if (this.sys.game.device.os.desktop)

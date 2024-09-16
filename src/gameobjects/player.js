@@ -10,9 +10,11 @@ class Player extends Phaser.GameObjects.Sprite {
     super(scene, x, y, "player");
     this.setOrigin(0.5);
     this.setScale(1);
+    this.setDepth(2); //Set depth of 2 so attackFX can be in front or behind
     this.scene.add.existing(this);
     this.scene.physics.add.existing(this);
     
+    // Keyboard Controls
     this.cursor = this.scene.input.keyboard.createCursorKeys();
     this.spaceBar = this.scene.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.SPACE );
     this.W = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -20,6 +22,7 @@ class Player extends Phaser.GameObjects.Sprite {
     this.S = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     this.D = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
+    // Virtual Joystick and buttons for mobile
     this.scene.add.rectangle(0, sizes.height, sizes.width, sizes.controlsHeight, 0x181818).setOrigin(0).setScrollFactor(0);
     this.joystick = this.scene.plugins.get('rexVirtualJoystick').add(this.scene, {
       x: sizes.controlsOffset,
@@ -38,7 +41,6 @@ class Player extends Phaser.GameObjects.Sprite {
         // enable: true,
         mode: 0,              // 0|'press'|1|'release'
         // clickInterval: 100    // ms
-        // threshold: undefined
     });
     this.jumpButton = scene.plugins.get('rexButton')
       .add(this.scene.add.sprite(sizes.width-sizes.controlsOffset*2, sizes.height + sizes.controlsHeight - sizes.controlsOffset,"jumpButton")
@@ -46,7 +48,6 @@ class Player extends Phaser.GameObjects.Sprite {
         // enable: true,
         mode: 0,              // 0|'press'|1|'release'
         // clickInterval: 100    // ms
-        // threshold: undefined
     });
     this.jumpButtonPressed = false;
     this.scene.input.addPointer(1);
@@ -64,10 +65,13 @@ class Player extends Phaser.GameObjects.Sprite {
     this.body.setBounce(0.001);
     this.body.setCollideWorldBounds(true);
     this.init();
+
     this.jumping = false;
     this.falling = false;
     this.attacking = false;
     this.timeBetweenAttacks = 300;
+    this.attackLevel = 0;
+    this.attackFX = this.scene.add.sprite(this.x,this.y,"fireslash").setDepth(3).setVisible(false);
     this.walkVelocity = 200;
     this.jumpVelocity = -400;
     this.invincible = false;
@@ -132,6 +136,18 @@ class Player extends Phaser.GameObjects.Sprite {
         frameRate: 20,
         repeat: 0
       });
+      this.scene.anims.create({
+        key: "fireattack1",
+        frames: this.scene.anims.generateFrameNumbers("fireslash", {start:0, end:3}),
+        frameRate: 10,
+        repeat: 0
+      });
+      this.scene.anims.create({
+        key: "fireattack2",
+        frames: this.scene.anims.generateFrameNumbers("fireslash", {start:4, end:7}),
+        frameRate: 10,
+        repeat: 0
+      });
     }
 
     this.anims.play("idle", true);
@@ -142,8 +158,12 @@ class Player extends Phaser.GameObjects.Sprite {
   }
 
   update() {
+    // Constrain light and attack FX to player
     this.light.x = this.x;
     this.light.y = this.y;
+    this.attackFX.x = this.x+(this.right ? 20 : -20);
+    this.attackFX.y = this.y+5;
+    
     if (this.dead) return;
     
     if (this.body.velocity.y > 150) {
@@ -195,6 +215,8 @@ class Player extends Phaser.GameObjects.Sprite {
     }
 
     if (Phaser.Input.Keyboard.JustDown(this.spaceBar)) this.attack();
+
+    //Constrain attack blow to player
     if(this.blow){
       this.blow.y = this.y;
       this.blow.x = this.x + (this.right ? 40 : -40);
@@ -218,6 +240,34 @@ class Player extends Phaser.GameObjects.Sprite {
 
   attack() {
     if(!this.attacking && !this.dead){
+      this.attacking = true;
+      this.scene.time.delayedCall(this.timeBetweenAttacks, () => this.attacking = false );
+      let offsetX = this.right ? 40 : -40;
+      let size = 43; //Size of the base attack
+
+      //Display Attack FX
+      if(this.attackLevel > 0){
+        this.attackFX.setFlipX(!this.right);
+        //Set the size of the attack FX
+        this.attackFX.setVisible(true).setScale(Math.max(1,this.attackLevel * 0.75));
+        // Play appropriate animating depending on combo
+        if(this.combo==0){
+          this.attackFX.setDepth(3).play("fireattack1").on("animationcomplete",()=>this.attackFX.setVisible(false));
+        }else{
+          this.attackFX.setDepth(1).play("fireattack2").on("animationcomplete",()=>this.attackFX.setVisible(false));
+        }
+      }
+      //Spawn an attack blow thats size is dependent on attackLevel
+      this.blow = new Blow(this.scene, this.x + offsetX, this.y, size * ((this.attackLevel * 0.75) + 1), size * ((this.attackLevel * 0.5) + 1));
+      this.scene.blows.add(this.blow);
+      
+      //Throwing Weapon attacks
+      if(this.weapon=="dagger"){
+        this.dagger = new Dagger(this.scene, this.x + offsetX, this.y, this.right ? "right":"left");
+        this.scene.daggers.add(this.dagger);
+      }
+
+      // Play appropriate animating depending on combo
       if(this.combo==0){
         this.anims.play("attack1", true);
         this.combo++;
@@ -225,19 +275,6 @@ class Player extends Phaser.GameObjects.Sprite {
         this.anims.play("attack2", true);
         this.combo=0;
       }
-
-      this.attacking = true;
-      this.scene.time.delayedCall(this.timeBetweenAttacks, () => this.attacking = false );
-      const offsetX = this.right ? 40 : -40;
-      const size = 42;
-      this.blow = new Blow(this.scene, this.x + offsetX, this.y, size, size);
-      this.scene.blows.add(this.blow);
-      //Weapon attacks
-      if(this.weapon=="dagger"){
-        this.dagger = new Dagger(this.scene, this.x + offsetX, this.y, this.right ? "right":"left");
-        this.scene.daggers.add(this.dagger);
-      }
-
       this.scene.playAudio("slash");
     }
   }
@@ -249,6 +286,7 @@ class Player extends Phaser.GameObjects.Sprite {
   animationComplete(animation, frame) {
     if (animation.key === "attack1" || animation.key === "attack2") {
       this.attacking = false;
+      this.attackFX.setVisible(false);
       if(this.jumping) this.anims.play("jumpUp",true);
       if(this.falling) this.anims.play("jumpDown", true);
     }

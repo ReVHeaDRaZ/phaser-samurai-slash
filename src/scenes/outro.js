@@ -109,11 +109,13 @@ export default class Outro extends Phaser.Scene {
       .setScale(1.25)
       .setOrigin(0.5)
       .setScrollFactor(0);
-    const coinAnimation = this.anims.create({
-      key: "coinscore",
-      frames: this.anims.generateFrameNumbers("coin", { start: 0, end: 7 }),
-      frameRate: 8,
-    });
+      if(!this.anims.exists("coinscore")){
+        this.anims.create({
+          key: "coinscore",
+          frames: this.anims.generateFrameNumbers("coin", { start: 0, end: 7 }),
+          frameRate: 8,
+        });
+      }
     this.scoreCoinsLogo.play({ key: "coinscore", repeat: -1 });
 
   }
