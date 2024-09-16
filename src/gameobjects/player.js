@@ -23,13 +23,13 @@ class Player extends Phaser.GameObjects.Sprite {
     this.D = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
     // Virtual Joystick and buttons for mobile
-    this.scene.add.rectangle(0, sizes.height, sizes.width, sizes.controlsHeight, 0x181818).setOrigin(0).setScrollFactor(0);
+    this.scene.add.rectangle(0, sizes.height, sizes.width, sizes.controlsHeight, 0x181818).setOrigin(0).setScrollFactor(0).setDepth(4);
     this.joystick = this.scene.plugins.get('rexVirtualJoystick').add(this.scene, {
       x: sizes.controlsOffset,
       y: sizes.height + sizes.controlsHeight - sizes.controlsOffset,
       radius: 100,
-      base: this.scene.add.image(0,0, 'moveButton').setDisplaySize(108, 108).setAlpha(0.01),
-      thumb: this.scene.add.image(0, 0, 'moveButton').setDisplaySize(64, 64).setAlpha(0.25),
+      base: this.scene.add.image(0,0, 'moveButton').setDisplaySize(108, 108).setAlpha(0.01).setDepth(5),
+      thumb: this.scene.add.image(0, 0, 'moveButton').setDisplaySize(64, 64).setAlpha(0.25).setDepth(5),
       dir: 'left&right',
       // forceMin: 16,
       // fixed: true,
@@ -37,14 +37,14 @@ class Player extends Phaser.GameObjects.Sprite {
     });
     this.attackButton = scene.plugins.get('rexButton')
       .add(this.scene.add.sprite(sizes.width-sizes.controlsOffset*0.75, sizes.height + sizes.controlsHeight - sizes.controlsOffset,"attackButton")
-      .setAlpha(0.25).setScrollFactor(0), {
+      .setAlpha(0.25).setScrollFactor(0).setDepth(5), {
         // enable: true,
         mode: 0,              // 0|'press'|1|'release'
         // clickInterval: 100    // ms
     });
     this.jumpButton = scene.plugins.get('rexButton')
       .add(this.scene.add.sprite(sizes.width-sizes.controlsOffset*2, sizes.height + sizes.controlsHeight - sizes.controlsOffset,"jumpButton")
-      .setAlpha(0.25).setScrollFactor(0), {
+      .setAlpha(0.25).setScrollFactor(0).setDepth(5), {
         // enable: true,
         mode: 0,              // 0|'press'|1|'release'
         // clickInterval: 100    // ms
