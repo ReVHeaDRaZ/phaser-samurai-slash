@@ -371,6 +371,9 @@ class Player extends Phaser.GameObjects.Sprite {
       case "dagger":
         this.weapon = "dagger";
         break;
+      case "firesword":
+        this.attackLevel++;
+        break;
       case "heart":
         this.hurt = false;
         this.scene.updateHearts(1);

@@ -73,7 +73,7 @@ class Chest extends Phaser.GameObjects.Sprite {
     This method picks a random prize and it shows it to the player when opening the chest. It plays a tween animation and calls the `applyPrize` method from the player.
     */
   showPrize() {
-    const prize = ["dagger", "coin", "heart"];
+    const prize = ["dagger", "coin", "heart", "firesword"];
     const selectedPrize = Phaser.Math.RND.pick(prize);
     this.scene.player.applyPrize(selectedPrize);
     let scale = selectedPrize=="coin" ? 0.5 : selectedPrize=="heart" ? 1 : 1
