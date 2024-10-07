@@ -61,10 +61,10 @@ export default class Splash extends Phaser.Scene {
         () => {
           //if (Phaser.Math.Between(0, 5) > 2) this.playAudioRandomly("stone");
           let text = this.add
-            .bitmapText(70 * (i + 1) - 30, 70, "hammerfont", letter, 60)
+            .bitmapText(70 * (i + 1) - 30, 70, "titleFont", letter, 80)
             .setTint(0xca6702)
             .setOrigin(0.5)
-            .setDropShadow(3, 5, 0xf09937, 0.9);
+            .setDropShadow(2, 4, 0xf09937, 0.25);
           Array(Phaser.Math.Between(4, 6))
             .fill(0)
             .forEach((i) => new Debris(this, text.x, text.y, 0xca6702));
@@ -98,10 +98,10 @@ export default class Splash extends Phaser.Scene {
             this.playAudioRandomly("stone");
           
           let text = this.add
-            .bitmapText(70 * (i + 1) - 30, 170, "hammerfont", letter, 60)
+            .bitmapText(70 * (i + 1) - 30, 170, "titleFont", letter, 80)
             .setTint(0xca6702)
             .setOrigin(0.5)
-            .setDropShadow(3, 5, 0xf09937, 0.9);
+            .setDropShadow(2, 4, 0xf09937, 0.25);
           Array(Phaser.Math.Between(4, 6))
             .fill(0)
             .forEach((i) => new Debris(this, text.x, text.y, 0xca6702));

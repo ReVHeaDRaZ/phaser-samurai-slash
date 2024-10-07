@@ -53,8 +53,11 @@ export default class GameScene extends Phaser.Scene{
       bg.sprite.tilePositionX = this.cameras.main.scrollX * bg.ratioX;
     }
 
+    // If player falls to death
     if (this.player.y > 540 && !this.player.dead){
       this.player.dead = true;
+      this.registry.set("daggers",0);
+      this.registry.set("attackLevel",0);
       this.updateHearts(-1);
       this.restartScene();
     }
@@ -285,7 +288,7 @@ export default class GameScene extends Phaser.Scene{
       const playerPosition = this.objectsLayer.objects.find(
         (object) => object.name === "playerStart"
       );
-      this.player = new Player(this, playerPosition.x, playerPosition.y, 2);
+      this.player = new Player(this, playerPosition.x, playerPosition.y, 2, this.registry.get("daggers"), this.registry.get("attackLevel"));
   
       this.physics.add.collider(this.player, this.platform);
       this.physics.add.collider(this.player, this.platformGroup);

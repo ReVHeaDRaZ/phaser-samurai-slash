@@ -6,7 +6,7 @@ import { sizes } from '../sizes';
 import Coin from './coin';
 
 class Player extends Phaser.GameObjects.Sprite {
-  constructor(scene, x, y, health = 2) {
+  constructor(scene, x, y, health = 2, daggers = 0, attackLevel = 0) {
     super(scene, x, y, "player");
     this.setOrigin(0.5);
     this.setScale(1);
@@ -70,7 +70,7 @@ class Player extends Phaser.GameObjects.Sprite {
     this.falling = false;
     this.attacking = false;
     this.timeBetweenAttacks = 300;
-    this.attackLevel = 0;
+    this.attackLevel = attackLevel;
     this.attackFX = this.scene.add.sprite(this.x,this.y,"fireslash").setDepth(3).setVisible(false);
     this.walkVelocity = 200;
     this.jumpVelocity = -400;
@@ -80,7 +80,7 @@ class Player extends Phaser.GameObjects.Sprite {
     this.hurtTween = null;
     this.dead = false;
     this.combo = 0;
-    this.weapon = null;
+    this.daggers = daggers;
 
     this.setPipeline('Light2D');
   }
@@ -262,9 +262,13 @@ class Player extends Phaser.GameObjects.Sprite {
       this.scene.blows.add(this.blow);
       
       //Throwing Weapon attacks
-      if(this.weapon=="dagger"){
+      if(this.daggers>0){
         this.dagger = new Dagger(this.scene, this.x + offsetX, this.y, this.right ? "right":"left");
         this.scene.daggers.add(this.dagger);
+        if(this.daggers>1){
+          this.dagger2 = new Dagger(this.scene, this.x + offsetX*-1, this.y, this.right ? "left":"right");
+          this.scene.daggers.add(this.dagger2);
+        }
       }
 
       // Play appropriate animating depending on combo
@@ -322,6 +326,10 @@ class Player extends Phaser.GameObjects.Sprite {
     this.anims.play("die", true);
     this.body.immovable = true;
     this.body.moves = false;
+    this.daggers = 0;
+    this.scene.registry.set("daggers",0);
+    this.attackLevel = 0;
+    this.scene.registry.set("attackLevel",0);
     this.scene.updateHearts(-1);
     this.scene.restartScene();
   }
@@ -369,10 +377,14 @@ class Player extends Phaser.GameObjects.Sprite {
       //   });
       //   break;
       case "dagger":
-        this.weapon = "dagger";
+        this.daggers++;
+        if(this.daggers>2) this.daggers=2;
+        this.scene.registry.set("daggers", this.daggers);
         break;
       case "firesword":
         this.attackLevel++;
+        if(this.attackLevel>2) this.attackLevel=2;
+        this.scene.registry.set("attackLevel", this.attackLevel);
         break;
       case "heart":
         this.hurt = false;

@@ -89,9 +89,9 @@ export default class Bootloader extends Phaser.Scene {
       "assets/fonts/mario.xml"
     );
     this.load.bitmapFont(
-      "hammerfont",
-      "assets/fonts/hammer.png",
-      "assets/fonts/hammer.xml"
+      "titleFont",
+      "assets/fonts/japaneserobot_0.png",
+      "assets/fonts/japaneserobot.xml"
     );
     this.load.bitmapFont(
       "arcadefont",
@@ -152,6 +152,8 @@ export default class Bootloader extends Phaser.Scene {
     this.registry.set("score", 0);
     this.registry.set("coins", 0);
     this.registry.set("hearts", 2);
+    this.registry.set("daggers", 0);
+    this.registry.set("attackLevel", 0);
   }
 
   createBars() {
