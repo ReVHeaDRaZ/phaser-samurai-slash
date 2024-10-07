@@ -72,6 +72,19 @@ class Player extends Phaser.GameObjects.Sprite {
     this.timeBetweenAttacks = 300;
     this.attackLevel = attackLevel;
     this.attackFX = this.scene.add.sprite(this.x,this.y,"fireslash").setDepth(3).setVisible(false);
+    this.bleedingFX = this.scene.add.particles(this.x,this.y,'blood', {
+      tint: 0xff0000,
+      alpha: { start: .5, end: 0 },
+      scale: {start:0.01, end: 0.4},
+      speedY: {random: [-100,-200]},
+      speedX: {random: [-50, 50] },
+      rotate: { min: -180, max: 180 },
+      lifespan: { min: 400, max: 800 },
+      frequency: 100,
+      duration: 0,
+      gravityY: 700,
+      emitting: false
+    });    
     this.walkVelocity = 200;
     this.jumpVelocity = -400;
     this.invincible = false;
@@ -133,7 +146,7 @@ class Player extends Phaser.GameObjects.Sprite {
       this.scene.anims.create({
         key: "die",
         frames: this.scene.anims.generateFrameNumbers("player", {start:98, end:111}),
-        frameRate: 20,
+        frameRate: 25,
         repeat: 0
       });
       this.scene.anims.create({
@@ -158,11 +171,13 @@ class Player extends Phaser.GameObjects.Sprite {
   }
 
   update() {
-    // Constrain light and attack FX to player
+    // Constrain light and FX to player
     this.light.x = this.x;
     this.light.y = this.y;
     this.attackFX.x = this.x+(this.right ? 20 : -20);
     this.attackFX.y = this.y+5;
+    this.bleedingFX.x = this.x;
+    this.bleedingFX.y = this.y;
     
     if (this.dead) return;
     
@@ -247,6 +262,12 @@ class Player extends Phaser.GameObjects.Sprite {
 
       //Display Attack FX
       if(this.attackLevel > 0){
+        this.scene.tweens.add({
+          targets: this,
+          duration: 200,
+          yoyo: true,
+          tint: { from: 0xffffff, to: 0xffdd55 },
+        });
         this.attackFX.setFlipX(!this.right);
         //Set the size of the attack FX
         this.attackFX.setVisible(true).setScale(Math.max(1,this.attackLevel * 0.75));
@@ -318,14 +339,31 @@ class Player extends Phaser.GameObjects.Sprite {
     }else{
       this.body.setVelocityY(-200);
       this.invincibleFlashPlayer(1);
+      this.bleedingFX.emitting = true;
     }
   }
 
   die() {
     this.dead = true;
-    this.anims.play("die", true);
     this.body.immovable = true;
     this.body.moves = false;
+    this.bleedingFX.emitting = false;
+    this.anims.play("die", true);
+  
+    //Blood Spatter
+    this.scene.add.particles(this.x,this.y,'blood', {
+      tint: 0xff0000,
+      alpha: { start: .5, end: 0 },
+      scale: {start:0.1, end: 0.4},
+      speedY: {random: [-200,100]},
+      speedX: {random: [-50, 50] },
+      rotate: { min: -180, max: 180 },
+      lifespan: { min: 400, max: 800 },
+      frequency: 5,
+      duration: 100,
+      gravityY: 100,
+    });
+    
     this.daggers = 0;
     this.scene.registry.set("daggers",0);
     this.attackLevel = 0;
@@ -336,6 +374,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
   setNotHurt(){
     this.hurtTween.stop();
+    this.bleedingFX.emitting=false;
     this.tint = 0xffffff;
     this.hurt = false;
     this.health = 2;
