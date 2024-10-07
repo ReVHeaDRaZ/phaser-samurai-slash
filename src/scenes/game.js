@@ -377,7 +377,7 @@ export default class GameScene extends Phaser.Scene{
         this
       );
 
-      this.physics.add.collider(
+      this.physics.add.overlap(
         this.player,
         this.zombieGroup,
         this.hitPlayer,
@@ -387,7 +387,7 @@ export default class GameScene extends Phaser.Scene{
         this
       );
 
-      this.physics.add.collider(
+      this.physics.add.overlap(
         this.player,
         this.batGroup,
         this.hitPlayer,
@@ -397,7 +397,7 @@ export default class GameScene extends Phaser.Scene{
         this
       );
 
-      this.physics.add.collider(
+      this.physics.add.overlap(
         this.player,
         this.firewormGroup,
         this.hitPlayer,
@@ -407,7 +407,7 @@ export default class GameScene extends Phaser.Scene{
         this
       );
 
-      this.physics.add.collider(
+      this.physics.add.overlap(
         this.player,
         this.fireballs,
         this.hitPlayer,
@@ -417,7 +417,7 @@ export default class GameScene extends Phaser.Scene{
         this
       );
 
-      this.physics.add.collider(
+      this.physics.add.overlap(
         this.player,
         this.shadowmonsterGroup,
         this.hitPlayer,
@@ -544,9 +544,8 @@ export default class GameScene extends Phaser.Scene{
     If the player is invincible (because of a power-up), do nothing. If not, then the player is hit, and sets hurtheart on the hud.
   */
   hitPlayer(player, foe) {
-    foe.turn();
-
     if (!player.invincible) {
+      foe.turn();
       if (!player.dead) {
         player.hit();
         this.playAudio("death");
