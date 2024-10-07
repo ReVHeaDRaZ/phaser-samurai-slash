@@ -88,6 +88,7 @@ export default class ShadowMonster extends Phaser.Physics.Arcade.Sprite {
   hit(hitDirection){
     // Can only be hit if attacking
     if(!this.recovering && !this.dead && this.attacking){
+      this.scene.playAudio("kill");
       this.anims.play(this.name + "hit");
       this.recovering = true;
       this.health--;

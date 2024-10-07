@@ -83,6 +83,7 @@ export default class Fireworm extends Phaser.Physics.Arcade.Sprite {
    
   hit(hitDirection){
     if(!this.recovering && !this.dead){
+      this.scene.playAudio("kill");
       this.anims.play(this.name + "hit");
       this.recovering = true;
       this.health--;

@@ -95,7 +95,7 @@
             "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 2100.333333333333,
+                "x": 312.99999999999994,
                 "y": 263.66666666666663
             }
         },
@@ -109,11 +109,11 @@
             "expandedObjectLayers": [
                 3
             ],
-            "scale": 1.5,
-            "selectedLayer": 0,
+            "scale": 1,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 2280.333333333333,
-                "y": 263.66666666666663
+                "x": 514.5,
+                "y": 390.5
             }
         },
         "scene4.tmx#background": {
@@ -121,6 +121,23 @@
         },
         "scene4.tmx#oak_woods": {
             "scaleInDock": 0.75
+        },
+        "scene5.tmx": {
+            "expandedObjectLayers": [
+                3
+            ],
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 327.66666666666663,
+                "y": 185.66666666666666
+            }
+        },
+        "scene5.tmx#background": {
+            "scaleInDock": 1
+        },
+        "scene5.tmx#oak_woods": {
+            "scaleInDock": 1
         }
     },
     "last.exportedFilePath": "C:/Users/Ryan/HtmlProjects/phaser/phaser-samurai-slash/public/assets/maps",

@@ -570,24 +570,20 @@ export default class GameScene extends Phaser.Scene{
     These functions are called when the player hits a foe. On the screen, the player generates a blow object and when this collides with a foe, the enemy is destroyed. It plays the sound and kills the foe.
   */
   hitZombie(blow, foe) {
-    this.playAudio("behead");
     foe.death();
     this.spawnCoin(blow.x,blow.y);
   }
   hitBat(blow, foe) {
-    this.playAudio("kill");
     foe.death();
     this.spawnCoin(blow.x,blow.y);
   }
   hitFireworm(blow, foe) {
-    this.playAudio("kill");
     const hitDirection = blow.x < foe.x ? "left" : "right";
     foe.hit(hitDirection);
     if(foe.dead)
       this.spawnCoin(blow.x,blow.y);
   }
   hitShadowmonster(blow, foe) {
-    this.playAudio("kill");
     const hitDirection = blow.x < foe.x ? "left" : "right";
     foe.hit(hitDirection);
     if(foe.dead)
@@ -607,7 +603,8 @@ export default class GameScene extends Phaser.Scene{
       if(hit.name=="shadowmonster")
         this.hitFireworm(dagger,hit);
 
-      dagger.hit();
+      if(hit.name!="shadowmonster")
+        dagger.hit();
     }
 
   /*

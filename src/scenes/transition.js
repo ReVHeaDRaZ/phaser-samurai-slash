@@ -14,7 +14,7 @@ export default class Transition extends Phaser.Scene {
     This creates the elements of the transition screen.
     */
   create() {
-    const messages = ["TUTORIAL", "STAGE 1", "STAGE 2", "STAGE 3", "STAGE 4"];
+    const messages = ["TUTORIAL", "STAGE 1", "STAGE 2", "STAGE 3", "STAGE 4", "STAGE 5"];
     this.width = this.sys.game.config.width;
     this.height = this.sys.game.config.height;
     this.center_width = this.width / 2;
@@ -25,7 +25,7 @@ export default class Transition extends Phaser.Scene {
     //Load outro scene if out of live or finished game
     if (this.registry.get("hearts") <= 0)
       this.loadOutro(true);
-    else if (this.number === 5)
+    else if (this.number === 6)
       this.loadOutro();
     else{
       this.addScore();

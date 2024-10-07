@@ -50,6 +50,7 @@ export default class Zombie extends Phaser.Physics.Arcade.Sprite {
     this.dead = true;
     this.body.enable = false;
     this.body.rotation = 0;
+    this.scene.playAudio("behead");
     this.anims.play(this.name + 'hit');
     this.anims.chain(this.name + "death");
     

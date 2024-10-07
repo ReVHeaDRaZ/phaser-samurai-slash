@@ -74,6 +74,7 @@ export default class Bat extends Phaser.Physics.Arcade.Sprite {
     this.dead = true;
     this.body.enable = false;
     this.body.rotation = 0;
+    this.scene.playAudio("kill");
     this.anims.play(this.name + "death");
     this.scene.add.particles(this.x,this.y,'blood', {
       tint: 0xff0000,
