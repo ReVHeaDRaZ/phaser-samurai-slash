@@ -2,8 +2,8 @@
 [game]: https://razstuff.com/samurai-slasher/
 
 # phaser-samurai-slash
-My first JavaScript game using the phaser library after reading through "Phaser By Example".
-Can be played at **[game]**
+My first JavaScript game using the phaser library after reading through "Phaser By Example". <br />
+Can be played at **[https://razstuff.com/samurai-slasher/][game]**
 ### Prerequisites:
 
 - JavaScript runtime **[node.js][node]**;
